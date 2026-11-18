@@ -1,0 +1,39 @@
+# Started automatically after a UAT approval. Moving UAT to the main
+# site (GA) waits for Chuck's approval (environment "ga").
+name: UAT -> GA (needs approval)
+on:
+  workflow_dispatch:
+    inputs:
+      sha: { description: "UAT version to make live", required: true }
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: promote-ga
+  cancel-in-progress: true   # only the newest UAT can be approved
+jobs:
+  check:
+    name: Check approvals are switched on
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash .github/scripts/check-approvals.sh
+        env: { GH_TOKEN: "${{ github.token }}" }
+  ga:
+    name: Approve UAT for GA (main site)
+    needs: check
+    runs-on: ubuntu-latest
+    environment:
+      name: ga
+      url: https://chuckedson541.github.io/
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: Make sure this is still what's in UAT
+        run: |
+          git fetch origin uat
+          [ "$(git rev-parse origin/uat)" = "${{ inputs.sha }}" ] || { echo "::error::UAT has changed since this was requested. Approve the newer run instead."; exit 1; }
+      - name: Move UAT to the main site
+        run: git push origin "${{ inputs.sha }}:refs/heads/main"
+      - run: gh workflow run deploy.yml --ref main
+        env: { GH_TOKEN: "${{ github.token }}" }

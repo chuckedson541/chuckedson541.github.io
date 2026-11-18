@@ -1,0 +1,43 @@
+# Runs on every change to Beta. Beta goes live at /beta/ right away.
+# Moving it to UAT waits for Chuck's approval (environment "uat").
+name: Beta -> UAT (needs approval)
+on:
+  push:
+    branches: [beta]
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: promote-uat
+  cancel-in-progress: true   # only the newest Beta can be approved
+jobs:
+  beta:
+    name: Publish Beta
+    runs-on: ubuntu-latest
+    steps:
+      - run: gh workflow run deploy.yml --ref main -R "$GITHUB_REPOSITORY"
+        env: { GH_TOKEN: "${{ github.token }}" }
+  check:
+    name: Check approvals are switched on
+    runs-on: ubuntu-latest
+    steps:
+      - run: bash -c "$(gh api "repos/$GITHUB_REPOSITORY/contents/.github/scripts/check-approvals.sh?ref=${GITHUB_SHA}" --jq .content | base64 -d)"
+        env: { GH_TOKEN: "${{ github.token }}" }
+  uat:
+    name: Approve Beta for UAT
+    needs: [beta, check]
+    runs-on: ubuntu-latest
+    environment:
+      name: uat
+      url: https://chuckedson541.github.io/uat/
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: Move this Beta version to UAT
+        run: git push origin "${GITHUB_SHA}:refs/heads/uat"
+      - name: Publish, then ask for GA approval
+        run: |
+          gh workflow run deploy.yml --ref main
+          gh workflow run promote-ga.yml --ref main -f sha="${GITHUB_SHA}"
+        env: { GH_TOKEN: "${{ github.token }}" }

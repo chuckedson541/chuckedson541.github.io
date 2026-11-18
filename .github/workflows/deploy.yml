@@ -1,0 +1,34 @@
+# Builds the whole website from three branches and publishes it:
+#   main -> the main site (GA, approved)
+#   uat  -> /uat/  (waiting for acceptance)
+#   beta -> /beta/ (testing; every change starts here)
+name: Deploy website (GA + UAT + Beta)
+on:
+  workflow_dispatch:   # started by the promotion workflows
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: main, path: ga }
+      - uses: actions/checkout@v4
+        with: { ref: uat, path: uat }
+      - uses: actions/checkout@v4
+        with: { ref: beta, path: beta }
+      - name: Put the three versions together
+        run: bash ga/.github/scripts/assemble.sh
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: _site }
+      - id: deploy
+        uses: actions/deploy-pages@v4

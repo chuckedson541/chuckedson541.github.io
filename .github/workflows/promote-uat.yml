@@ -22,7 +22,8 @@ jobs:
     name: Check approvals are switched on
     runs-on: ubuntu-latest
     steps:
-      - run: bash -c "$(gh api "repos/$GITHUB_REPOSITORY/contents/.github/scripts/check-approvals.sh?ref=${GITHUB_SHA}" --jq .content | base64 -d)"
+      - uses: actions/checkout@v4
+      - run: bash .github/scripts/check-approvals.sh
         env: { GH_TOKEN: "${{ github.token }}" }
   uat:
     name: Approve Beta for UAT

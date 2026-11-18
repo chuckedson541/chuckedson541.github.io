@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bar Truck Wraparound Deck</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one shop-floor viewport (3D stage) with an operator's control strip beneath it, then a compact legend + readouts. */
+:root{
+  --bg:#eef0ee; --panel:#ffffff; --fg:#1f2528; --muted:#5f686d; --line:#d3d8d6;
+  --stage:#dfe3e1; --ground:#c9cfcc; --grid:#b4bbb8;
+  --accent:#e2611a; --accent-ink:#ffffff; --steel:#5b6168;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#15191b; --panel:#1d2225; --fg:#e4e8e6; --muted:#9aa4a8; --line:#30383b;
+  --stage:#1b2023; --ground:#262d30; --grid:#343c40;
+  --accent:#f07a35; --accent-ink:#15191b; --steel:#8b939a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#15191b; --panel:#1d2225; --fg:#e4e8e6; --muted:#9aa4a8; --line:#30383b;
+  --stage:#1b2023; --ground:#262d30; --grid:#343c40;
+  --accent:#f07a35; --accent-ink:#15191b; --steel:#8b939a; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5}
+.wrap{max-width:1180px;margin:0 auto;padding-block:20px 40px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:grid;gap:14px}
+header{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 16px}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(26px,4vw,34px);letter-spacing:.01em;margin:0;text-wrap:balance}
+.sub{color:var(--muted);margin:0;font-size:14px}
+.stage{position:relative;height:clamp(340px,60vh,620px);border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--stage)}
+#view{display:block;width:100%;height:100%;touch-action:none}
+.status{position:absolute;left:12px;top:12px;right:12px;pointer-events:none;display:flex}
+.status span{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);padding:6px 10px;font-size:13px;max-width:520px;border-radius:0}
+.views{position:absolute;right:10px;bottom:10px;display:flex;gap:6px}
+.controls{display:grid;grid-template-columns:auto auto 1fr auto;gap:10px 14px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:12px 14px}
+@media (max-width:640px){.controls{grid-template-columns:1fr 1fr}.controls .range{grid-column:1/-1;order:3}.controls .pct{order:2;justify-self:end}}
+button{font:500 14px var(--body);color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:7px 12px;cursor:pointer}
+button:hover{border-color:var(--steel)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+button[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.views button{font-size:12px;padding:5px 9px}
+.range{display:flex;align-items:center;gap:10px;min-width:0}
+.range label{font-family:var(--display);font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+input[type=range]{flex:1;min-width:0;accent-color:var(--accent)}
+.pct{font-family:var(--mono);font-size:14px;font-variant-numeric:tabular-nums;min-width:4.5ch;text-align:right}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:12px 14px;min-width:0}
+.card h2{font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:.06em;text-transform:uppercase;margin:0 0 8px;color:var(--muted)}
+dl{display:grid;grid-template-columns:1fr auto;gap:6px 12px;margin:0}
+dt{color:var(--muted);font-size:14px}
+dd{margin:0;font-family:var(--mono);font-size:14px;font-variant-numeric:tabular-nums;text-align:right}
+.legend{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:14px}
+.legend li{display:flex;gap:8px;align-items:center}
+.sw{width:14px;height:14px;border-radius:2px;flex:none;border:1px solid var(--line)}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.note{color:var(--muted);font-size:13px;margin:8px 0 0}
+#err{display:none;padding:16px;color:var(--fg)}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Bar Truck Wraparound Deck</h1>
+    <p class="sub">26 ft box · 20 × 15 ft bi-fold deck · side deck with 3-tier sliding Suntuf roof · rear deck from the drop-down door and 10 floating platforms · shade sails · venue setup and teardown</p>
+  </header>
+
+  <div class="stage">
+    <canvas id="view" aria-label="3D model of the box truck and folding deck. Drag to orbit, scroll or pinch to zoom."></canvas>
+    <div id="err">The 3D view couldn't load. Check your connection and reload the page.</div>
+    <div class="status"><span id="stageText">Closed and latched for travel.</span></div>
+    <div class="views" role="group" aria-label="Camera views">
+      <button id="v34" aria-pressed="true">3/4 view</button>
+      <button id="vEnd" aria-pressed="false">End view</button>
+      <button id="vTop" aria-pressed="false">Top</button>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button id="btnClose">Pack up</button>
+    <button id="btnOpen" class="primary">Set up</button>
+    <div class="range">
+      <label for="open">Setup</label>
+      <input id="open" type="range" min="0" max="1000" value="0" aria-describedby="pct">
+    </div>
+    <span class="pct" id="pct">0%</span>
+  </div>
+
+  <div class="grid">
+    <section class="card">
+      <h2>Readouts</h2>
+      <dl>
+        <dt>Middle hinge height above ground</dt><dd id="rHinge">–</dd>
+        <dt>Deck reach from truck side</dt><dd id="rReach">–</dd>
+        <dt>Cable tension, both cables</dt><dd id="rTension">–</dd>
+        <dt>Outer edge</dt><dd id="rEdge">–</dd>
+        <dt>Guard height</dt><dd>42″ to drink rail</dd>
+        <dt>Stair (44″ clear)</dt><dd>7 × 6⅞″ rise, 11″ treads</dd>
+      </dl>
+      <p class="note">Tension assumes ~800 lb per leaf and frictionless wheels. It peaks right as the deck starts to close.</p>
+    </section>
+    <section class="card">
+      <h2>Roof and rear deck</h2>
+      <dl>
+        <dt>Cover</dt><dd>19′ 4″ × 15′ 6″</dd>
+        <dt>Clear height, tier 1 (inner)</dt><dd>7′ 8″</dd>
+        <dt>Clear height, tier 2</dt><dd>7′ 3″</dd>
+        <dt>Clear height, tier 3 (outer)</dt><dd>6′ 10″</dd>
+        <dt>Headroom under stowed roof</dt><dd>6′ 10″</dd>
+        <dt>Rear deck</dt><dd>15′ × 21′ 10″ + 3′ × 14′ strip</dd>
+        <dt>Total deck</dt><dd>≈ 670 sq ft</dd>
+      </dl>
+      <p class="note">Each tier steps about 5 in lower so rain runs outward. Outer leaf surface: aluminum tread plate.</p>
+    </section>
+    <section class="card">
+      <h2>Key</h2>
+      <ul class="legend">
+        <li><span class="sw" style="background:#b9c0c6"></span>6061 aluminum frame and header</li>
+        <li><span class="sw" style="background:#b98a55"></span>Plywood deck</li>
+        <li><span class="sw" style="background:var(--accent)"></span>Lift cables (removable)</li>
+        <li><span class="sw" style="background:#3b4146"></span>Legs and wheeled swivel jacks</li>
+        <li><span class="sw" style="background:#b9c0c6"></span>Removable cable rail panels (1/8 in stainless at 3 in), 10 in cedar drink rail; cedar stair handrails</li>
+        <li><span class="sw" style="background:#6b4a2b"></span>3-tier sliding roof, Bronze Suntuf on aluminum frames, fold-down legs</li>
+        <li><span class="sw" style="background:#cdb48a"></span>Rear deck: drop-down door, 10 floating platforms, 2 shade sails on 4 posts</li>
+        <li><span class="sw" style="background:#86705b"></span>Interior: hardwood floor, barnwood walls, tin wainscot</li>
+      </ul>
+      <p class="note">Drag to orbit. Scroll or pinch to zoom. Right-drag or two fingers to pan.</p>
+    </section>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+if(!window.THREE){document.getElementById('err').style.display='block';return;}
+const $=id=>document.getElementById(id);
+const canvas=$('view');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true});
+renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1));
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(38,1,0.5,500);
+const controls=new THREE.OrbitControls(camera,canvas);
+controls.enableDamping=true;controls.maxPolarAngle=Math.PI*0.495;controls.minDistance=8;controls.maxDistance=140;
+
+// ---------- theme ----------
+const groundMat=new THREE.MeshStandardMaterial({color:0xc9cfcc,roughness:1});
+let grid;
+function css(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
+function applyTheme(){
+  scene.background=new THREE.Color(css('--stage')||'#dfe3e1');
+  groundMat.color.set(css('--ground')||'#c9cfcc');
+  if(grid){scene.remove(grid);}
+  grid=new THREE.GridHelper(120,60,new THREE.Color(css('--grid')),new THREE.Color(css('--grid')));
+  grid.position.set(13,0.01,6);scene.add(grid);
+  cableMat.color.set(css('--accent')||'#e2611a');
+}
+// ---------- materials ----------
+const M=(c,o={})=>new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:.7,metalness:0},o));
+const alu=M(0xb9c0c6,{metalness:.55,roughness:.4});
+const body=M(0xeceeec,{roughness:.6});
+const cabMat=M(0x34586b,{roughness:.5});
+const glass=M(0x1d2a33,{roughness:.2,metalness:.3});
+const tire=M(0x222426,{roughness:.9});
+const rim=M(0x9aa1a6,{metalness:.5,roughness:.4});
+const chassis=M(0x2c3034);
+const wood=M(0xb98a55,{roughness:.8});
+const tread=M(0xd3d9de,{metalness:.7,roughness:.32});
+const legMat=M(0x3b4146,{roughness:.6,metalness:.3});
+const barTop=M(0x6e4a2c,{roughness:.6});
+// truck floor: hardwood planks, 6 in wide, running the length of the box (one tile = 4 x 4 ft)
+const plankCanvas=(()=>{const c=document.createElement('canvas');c.width=c.height=512;const g=c.getContext('2d');
+  const tones=['#a8743f','#b8834a','#9c6a38','#b07a43','#a06e3b','#bd8a52','#a5713e','#b27d47'];let r=7;const rnd=()=>(r=(r*9301+49297)%233280)/233280;
+  for(let i=0;i<8;i++){const y=i*64;let x=-rnd()*300;
+    while(x<512){const L=180+rnd()*260;g.fillStyle=tones[(i*3+Math.floor(x/97)+8)%8];g.fillRect(x,y,L,64);
+      g.strokeStyle='rgba(60,35,15,.18)';g.lineWidth=1;for(let k=0;k<5;k++){const yy=y+8+rnd()*48;g.beginPath();g.moveTo(x,yy);g.bezierCurveTo(x+L*.3,yy+rnd()*6-3,x+L*.7,yy+rnd()*6-3,x+L,yy);g.stroke();}
+      g.fillStyle='#4a2c14';g.fillRect(x,y,2,64);x+=L;}
+    g.fillStyle='#4a2c14';g.fillRect(0,y,512,3);}
+  return c;})();
+function plankMat(w,d){const t=new THREE.CanvasTexture(plankCanvas);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(w/4,d/4);
+  if(renderer&&renderer.capabilities)t.anisotropy=renderer.capabilities.getMaxAnisotropy();return M(0xffffff,{map:t,roughness:.75});}
+const cableMat=new THREE.LineBasicMaterial({color:0xe2611a});
+const lugMat=M(0xe2611a,{roughness:.5});
+
+function box(w,h,d,mat,x,y,z,parent){
+  const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
+  m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;(parent||scene).add(m);return m;
+}
+function cyl(r,len,mat,x,y,z,axis,parent){
+  const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,len,24),mat);
+  if(axis==='x')m.rotation.z=Math.PI/2; if(axis==='z')m.rotation.x=Math.PI/2;
+  m.position.set(x,y,z);m.castShadow=true;(parent||scene).add(m);return m;
+}
+
+// ---------- lights + ground ----------
+scene.add(new THREE.HemisphereLight(0xffffff,0x8a8f8c,.65));
+const sun=new THREE.DirectionalLight(0xffffff,.85);
+sun.position.set(-10,40,30);sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048);
+Object.assign(sun.shadow.camera,{left:-35,right:35,top:35,bottom:-35,near:1,far:120});
+sun.target.position.set(14,0,6);scene.add(sun,sun.target);
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(160,160),groundMat);
+ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
+
+// ---------- truck (feet; x = length, y = up, z = across, +z = curb side) ----------
+const FLOOR=4, ROOF=12.5, X0=3, X1=23, XC=13, LEN=20, D=7.5, T=0.4, RZ=4-10/12;   // deck pocket recessed 10 in; 4.75 in leaves
+box(32,0.6,3.2,chassis,16,2.9,0);
+[[4.2,1],[8.2,1],[29,0]].forEach(([x,dual])=>{
+  [-1,1].forEach(s=>{
+    const zz=s*(dual?3.25:3.45);
+    cyl(1.55,dual?1.3:0.9,tire,x,1.55,zz,'z');
+    cyl(0.85,dual?1.34:0.94,rim,x,1.55,zz,'z');
+  });
+});
+box(26,0.45,4+RZ,plankMat(26,4+RZ),13,FLOOR-0.225,(RZ-4)/2);   // floor, cut back 10 in along the opening
+[[X0/2,X0],[(26+X1)/2,26-X1]].forEach(([cx,w])=>box(w,0.45,4-RZ,plankMat(w,4-RZ),cx,FLOOR-0.225,(RZ+4)/2)); // full-width floor at the ends
+[X0,X1].forEach(x=>box(0.12,ROOF-FLOOR,4-RZ,body,x,(FLOOR+ROOF)/2,(RZ+4)/2));          // pocket side walls
+box(26,0.2,8.2,body,13,ROOF+0.1,0);               // roof
+box(26,ROOF-FLOOR,0.12,body,13,(FLOOR+ROOF)/2,-4);// street-side wall
+[-3.8,3.8].forEach(z=>box(0.12,ROOF-FLOOR,0.4,body,0,(FLOOR+ROOF)/2,z));   // rear corner posts
+box(0.12,ROOF-FLOOR-8,8,body,0,FLOOR+8+(ROOF-FLOOR-8)/2,0);             // rear header over the door
+const XR=-15, DW=7.2, DL=8;                                              // rear deck edge; door 7 ft 2 in x 8 ft
+const doorG=new THREE.Group(); doorG.position.set(0,FLOOR,0); scene.add(doorG);
+box(0.08,DL,DW,wood,-0.04,DL/2,0,doorG);                                 // deck face (inside face when closed)
+[-DW/2+0.09,DW/2-0.09].forEach(z=>box(0.32,DL,0.17,alu,-0.24,DL/2,z,doorG));
+for(let i=0;i<7;i++)box(0.32,0.17,DW-0.34,alu,-0.24,0.1+i*(DL-0.2)/6,0,doorG);
+box(0.04,DL,DW,body,-0.43,DL/2,0,doorG);                                 // outside skin
+const doorLegs=new THREE.Group(); doorG.add(doorLegs);
+[-DW/2+0.4,DW/2-0.4].forEach(z=>{box(FLOOR-0.4,0.22,0.22,legMat,-0.4-(FLOOR-0.4)/2,DL-0.3,z,doorLegs);box(0.06,0.6,0.6,legMat,-FLOOR+0.03,DL-0.3,z,doorLegs);});
+box(0.12,ROOF-FLOOR,8,body,26,(FLOOR+ROOF)/2,0);  // front wall
+box(X0,ROOF-FLOOR,0.12,body,X0/2,(FLOOR+ROOF)/2,4);
+box(26-X1,ROOF-FLOOR,0.12,body,(26+X1)/2,(FLOOR+ROOF)/2,4);
+box(LEN+0.6,0.35,0.5,alu,XC,ROOF-0.175,RZ-0.25);   // header beam, 4x6 laid flat (4 in tall), recessed into the pocket
+[X0,X1].forEach(x=>box(0.35,ROOF-FLOOR-0.35,0.35,alu,x,(FLOOR+ROOF-0.35)/2,RZ-0.2)); // end posts
+box(LEN,0.3,0.3,alu,XC,FLOOR-0.2,RZ-0.1);         // floor hinge rail at the new floor edge
+// cab
+box(6.2,6.4,7.6,cabMat,29.4,6.4,0);
+box(0.1,2.6,6.4,glass,32.52,8,0);
+[-1,1].forEach(s=>box(2.6,2.2,0.1,glass,29.6,8.1,s*3.82));
+box(2.8,1.8,7.4,cabMat,31.1,3.9,0);
+// inside: western finish on the walls; no furniture (bar layouts come later)
+// weathered barnwood siding above, corrugated tin wainscot below a rough-sawn chair rail
+const barnCanvas=(()=>{const c=document.createElement('canvas');c.width=512;c.height=512;const g=c.getContext('2d');
+  const tones=['#86705b','#8e7862','#7d6854','#937d66','#7a6551','#8a735d','#98826b','#806b57'];let r=3;const rnd=()=>(r=(r*9301+49297)%233280)/233280;
+  for(let i=0;i<8;i++){const y=i*64;let x=-rnd()*200;
+    while(x<512){const L=260+rnd()*250;g.fillStyle=tones[Math.floor(rnd()*8)];g.fillRect(x,y,L,64);
+      for(let k=0;k<9;k++){const yy=y+4+rnd()*56;g.strokeStyle=`rgba(${rnd()<.6?'40,30,22':'200,185,165'},${.12+rnd()*.2})`;g.lineWidth=.5+rnd()*1.5;g.beginPath();g.moveTo(x,yy);g.lineTo(x+L,yy+rnd()*4-2);g.stroke();}
+      g.fillStyle='rgba(30,22,16,.45)';g.beginPath();g.ellipse(x+L*.3+rnd()*L*.4,y+20+rnd()*24,5,3,0,0,7);g.fill();
+      g.fillStyle='#2a2420';[[x+6,y+16],[x+6,y+48],[x+L-8,y+16],[x+L-8,y+48]].forEach(([a,b])=>g.fillRect(a,b,3,3));
+      g.fillStyle='#2b211a';g.fillRect(x,y,3,64);x+=L;}
+    g.fillStyle='#2b211a';g.fillRect(0,y,512,4);}
+  return c;})();
+const tinCanvas=(()=>{const c=document.createElement('canvas');c.width=256;c.height=256;const g=c.getContext('2d');
+  for(let x=0;x<256;x++){const v=Math.sin(x/256*Math.PI*2*8);const l=150+v*55;g.fillStyle=`rgb(${l},${l+4},${l+8})`;g.fillRect(x,0,1,256);}
+  let r=5;const rnd=()=>(r=(r*9301+49297)%233280)/233280;
+  for(let k=0;k<40;k++){g.fillStyle=`rgba(${120+rnd()*60},${55+rnd()*30},20,${.08+rnd()*.25})`;g.beginPath();g.ellipse(rnd()*256,rnd()*256,4+rnd()*22,3+rnd()*14,0,0,7);g.fill();}
+  g.fillStyle='rgba(110,50,20,.35)';g.fillRect(0,240,256,16);
+  return c;})();
+function texMat(cv,ru,rv,o={}){const t=new THREE.CanvasTexture(cv);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(ru,rv);
+  if(renderer&&renderer.capabilities)t.anisotropy=renderer.capabilities.getMaxAnisotropy();return M(0xffffff,Object.assign({map:t,roughness:.85},o));}
+const WH=3, CH=ROOF-FLOOR;                        // 36 in wainscot, full wall height
+function westernWall(len,cx,cz,alongX,inset){       // one interior wall face; inset = which way is "inside"
+  const t=0.04, hu=CH-WH-0.25;
+  const mk=(w,h,mat,y,off)=>alongX?box(w,h,t,mat,cx,y,cz+inset*off):box(t,h,w,mat,cx+inset*off,y,cz);
+  mk(len,WH,texMat(tinCanvas,len/2.2,1,{metalness:.45,roughness:.5}),FLOOR+WH/2,0.08);
+  mk(len,hu,texMat(barnCanvas,len/8,hu/4),FLOOR+WH+0.25+hu/2,0.08);
+  mk(len,0.25,M(0x5a3f2a,{roughness:.8}),FLOOR+WH+0.125,0.11);          // chair rail
+  mk(len,0.3,M(0x4a3424,{roughness:.8}),ROOF-0.15,0.11);                // crown board
+}
+westernWall(26-0.24,13,-4,true,1);                                       // street-side wall (back wall of the bar)
+westernWall(8-0.24,26,0,false,-1);                                       // front wall
+westernWall(X0-0.24,X0/2,4,true,-1);                                     // short curb-side wall, rear end
+westernWall(26-X1-0.24,(26+X1)/2,4,true,-1);                             // short curb-side wall, front end
+
+// ---------- leaf A (inner): pivots on the floor edge ----------
+const A=new THREE.Group(); A.position.set(XC,FLOOR,RZ); scene.add(A);
+const fh=T-0.08;
+box(LEN,0.08,D,wood,0,-0.04,D/2,A);
+[0.1,D-0.1].forEach(z=>box(LEN,fh,0.17,alu,0,-0.08-fh/2,z,A));
+for(let i=0;i<16;i++){const x=-LEN/2+0.1+i*(LEN-0.2)/15;box(0.17,fh,D-0.34,alu,x,-0.08-fh/2,D/2,A);}
+
+// ---------- leaf B (outer): hangs from the middle hinge on its underside ----------
+const B=new THREE.Group(); scene.add(B);
+const bDeck=box(LEN,0.08,D,tread,0,T-0.04,D/2,B);
+[0.1,D-0.1].forEach(z=>box(LEN,fh,0.17,alu,0,fh/2,z,B));
+for(let i=0;i<16;i++){const x=-LEN/2+0.1+i*(LEN-0.2)/15;box(0.17,fh,D-0.34,alu,x,fh/2,D/2,B);}
+for(let i=0;i<8;i++){cyl(0.12,0.6,rim,-LEN/2+0.6+i*(LEN-1.2)/7,0,0,'x',B);} // middle hinge knuckles
+[-LEN/2,LEN/2].forEach(x=>box(0.25,0.35,0.35,lugMat,x+(x<0?-0.12:0.12),0.05,0,B)); // lift lugs
+for(let i=0;i<8;i++){cyl(0.1,0.6,rim,X0+0.6+i*(LEN-1.2)/7,FLOOR-0.05,RZ+0.05,'x');}  // floor hinge knuckles
+
+// ---------- legs ----------
+const legX=[3.6,8.3,13,17.7,22.4];
+const midLegs=new THREE.Group(); scene.add(midLegs);
+legX.forEach(x=>{
+  const h=FLOOR-T;
+  box(0.22,h-0.1,0.22,legMat,x,h/2+0.05,RZ+D,midLegs);
+  box(0.6,0.06,0.6,legMat,x,0.03,RZ+D,midLegs);
+});
+const jacksDown=new THREE.Group(); scene.add(jacksDown);
+const jackParts=legX.map(x=>{
+  const col=box(0.26,1,0.26,legMat,x,0,0,jacksDown);
+  const wheel=cyl(0.36,0.28,tire,x,0.36,0,'x',jacksDown);
+  const crank=box(0.08,0.08,0.7,legMat,x,0,0,jacksDown);
+  return {col,wheel,crank};
+});
+const jacksUp=new THREE.Group(); B.add(jacksUp);
+legX.forEach(x=>{
+  box(0.26,0.26,2.6,legMat,x-XC,-0.2,D-1.6,jacksUp);
+  cyl(0.36,0.28,tire,x-XC,-0.36,D-3.0,'x',jacksUp);
+});
+
+// ---------- removable cable-rail panels (set only when the deck is open) ----------
+const rails=new THREE.Group(); scene.add(rails);
+const panels=[];
+const railCable=new THREE.LineBasicMaterial({color:0x8d969c});
+const capMat=M(0xc4cace,{metalness:.5,roughness:.35});
+// cedar drink rail: warm red-brown with long grain running the length of the board (one tile = 4 ft)
+const cedarCanvas=(()=>{const c=document.createElement('canvas');c.width=512;c.height=128;const g=c.getContext('2d');
+  const gr=g.createLinearGradient(0,0,0,128);gr.addColorStop(0,'#b0683a');gr.addColorStop(.5,'#c27b48');gr.addColorStop(1,'#a9633a');g.fillStyle=gr;g.fillRect(0,0,512,128);
+  let r=11;const rnd=()=>(r=(r*9301+49297)%233280)/233280;
+  for(let k=0;k<26;k++){const y=rnd()*128,a=.08+rnd()*.16;g.strokeStyle=`rgba(${rnd()<.5?'90,40,18':'225,160,110'},${a})`;g.lineWidth=.6+rnd()*1.8;
+    g.beginPath();g.moveTo(0,y);for(let x=0;x<=512;x+=64)g.lineTo(x,y+Math.sin(x/90+k)*3*rnd());g.stroke();}
+  g.fillStyle='rgba(80,35,15,.55)';for(let k=0;k<2;k++){g.beginPath();g.ellipse(80+rnd()*350,30+rnd()*70,7,4,0,0,7);g.fill();}
+  return c;})();
+function cedarMat(L){const t=new THREE.CanvasTexture(cedarCanvas);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(L/4,1);
+  if(renderer&&renderer.capabilities)t.anisotropy=renderer.capabilities.getMaxAnisotropy();return M(0xffffff,{map:t,roughness:.55});}
+const DECK=FLOOR, GH=3.5;                       // 42 in guard
+function panel(xa,za,xb,zb,where){
+  const dx=xb-xa,dz=zb-za,L=Math.hypot(dx,dz),ang=Math.atan2(dz,dx);
+  const g=new THREE.Group(); g.position.set(xa,DECK,za); g.rotation.y=-ang; rails.add(g); panels.push({g,where});
+  [0.12,L-0.12].forEach(u=>box(0.17,GH,0.17,alu,u,GH/2,0,g));
+  box(L-0.1,0.17,0.17,alu,L/2,GH-0.18,0,g);      // top rail
+  box(L-0.1,0.12,0.12,alu,L/2,0.3,0,g);          // bottom rail
+  box(L,0.125,0.83,cedarMat(L),L/2,GH-0.03,0,g); // 10 in cedar drink rail, 1-1/2 in thick
+  const pts=[];                                        // 1/8 in stainless cables at 3 in
+  for(let k=0;k<12;k++){const y=0.62+k*0.25;pts.push(new THREE.Vector3(0.2,y,0),new THREE.Vector3(L-0.2,y,0));}
+  g.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts),railCable));
+}
+const ZOUT=RZ+2*D+0.02;
+for(let i=0;i<4;i++)panel(X0+i*5,ZOUT-0.1,X0+(i+1)*5,ZOUT-0.1,'outer edge');           // outer edge, 4 x 5 ft
+for(let i=0;i<3;i++)panel(X1-0.1,RZ+0.2+i*5,X1-0.1,RZ+0.2+(i+1)*5-0.05,'front end');        // front end, 3 x 5 ft
+for(let i=0;i<4;i++)panel(XR+i*4.5,ZOUT-0.1,XR+(i+1)*4.5-0.05,ZOUT-0.1,'curb side of the rear deck');   // 4 x 4.5 ft
+{const z0=-DW/2+0.1, z1=ZOUT-0.25-44/12-0.15, L=(z1-z0)/4;
+ for(let i=0;i<4;i++)panel(XR+0.1,z0+i*L,XR+0.1,z0+(i+1)*L-0.05,'rear edge');}                         // 4 x ~4.4 ft, stair opening at the corner
+for(let i=0;i<3;i++)panel(XR+i*5,-DW/2+0.1,XR+(i+1)*5-0.05,-DW/2+0.1,'street side of the rear deck');  // 3 x 5 ft
+
+// ---------- folding stair at the rear end, outer corner (44 in clear) ----------
+const stairBase=new THREE.Group(); stairBase.position.x=XR-X0; scene.add(stairBase);   // stair hooks on the rear deck's outer corner
+const stairPivot=new THREE.Group(); stairPivot.position.set(X0,FLOOR,0); stairBase.add(stairPivot);
+const stair=new THREE.Group(); stair.position.set(-X0,-FLOOR,0); stairPivot.add(stair);
+const RISE=6.86/12, RUN=11/12, NT=6, SW=44/12, SZ0=ZOUT-0.25-SW, SZ1=ZOUT-0.25;
+const treads=[];                                    // each tread pivots at its back edge (parallelogram stair)
+for(let i=1;i<=NT;i++){
+  const x1=X0-(i-1)*RUN, y=DECK-i*RISE;
+  const tg=new THREE.Group(); tg.position.set(x1,y-0.06,(SZ0+SZ1)/2); stair.add(tg); treads.push(tg);
+  box(RUN+0.08,0.06,SW,tread,-RUN/2,0.03,0,tg);
+  box(0.06,0.18,SW,tread,-RUN+0.03,-0.06,0,tg);      // nosing
+}
+const sx0=X0, sy0=DECK-0.25, sx1=X0-(NT+1)*RUN, sy1=0.15;
+const sL=Math.hypot(sx0-sx1,sy0-sy1), sA=Math.atan2(sy0-sy1,sx0-sx1);
+const sRails=new THREE.Group(); stair.add(sRails);   // removable side guard panels with the handrails
+[SZ0-0.1,SZ1+0.1].forEach(z=>{
+  [0,-0.38].forEach(off=>{
+    const s=box(sL,0.33,0.17,alu,(sx0+sx1)/2,(sy0+sy1)/2+off,z,stair); s.rotation.z=sA;
+  });
+  const h=box(sL+0.2,0.16,0.19,cedarMat(sL),(sx0+sx1)/2,(sy0+sy1)/2+3.02,z,sRails); h.rotation.z=sA;  // cedar handrail, eased 2x3
+  [sx0-0.3,sx1+0.6].forEach(px=>{const py=sy1+(px-sx1)*Math.tan(sA);box(0.14,3.1,0.14,alu,px,py+1.5,z,sRails);});
+  {const cp=[], xa=sx1+0.6, xb=sx0-0.3, yAt=x=>sy1+(x-sx1)*Math.tan(sA);   // raked cables, 3 in apart
+   for(let k=0;k<10;k++){const off=0.45+k*0.25; cp.push(new THREE.Vector3(xa,yAt(xa)+off,z),new THREE.Vector3(xb,yAt(xb)+off,z));}
+   sRails.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(cp),railCable));}
+  box(0.5,0.08,0.5,legMat,sx1+0.2,0.04,z,stair);  // leveling foot
+});
+function setStair(lift,fold,railsUp){
+  // lift 0 = folded package lying flat on the ground beside the rear corner; 1 = hooked on the deck
+  stairPivot.position.set(X0-0.6+0.6*lift, 0.62+(FLOOR-0.62)*lift, 0);
+  stairPivot.rotation.z=-sA*(1-lift);
+  treads.forEach(tg=>tg.rotation.z=fold*sA);
+  sRails.visible=railsUp<1; sRails.position.y=railsUp*2.6;
+}
+
+// ---------- 3-tier sliding Suntuf roof: stowed under the ceiling, telescopes out under the header ----------
+// tiers 19 ft 4 in to 18 ft 8 in wide, 6 ft 4 in deep; each one steps 5 in lower than the one inside it
+const TL=6.33, TP=0.42, TY0=12.10, TBEAM=0.333;
+const T_STOW=-3.7, T_OUT=[1.17,6.75,12.33];          // inner-edge z when stowed / open
+const T_X=[[3.35,22.65],[3.5,22.5],[3.65,22.35]];
+const legZ=k=>k===2?(ZOUT-0.45-T_OUT[2]):TL-0.25;   // tier 3's legs stay just inside the outer rail line
+const suntufCanvas=(()=>{const c=document.createElement('canvas');c.width=64;c.height=256;const g=c.getContext('2d');
+  for(let x=0;x<64;x++){const v=Math.cos(x/64*Math.PI*2);const l=88+v*30;g.fillStyle=`rgb(${l+28},${l},${Math.max(0,l-34)})`;g.fillRect(x,0,1,256);}
+  return c;})();
+function suntufMat(w){const t=new THREE.CanvasTexture(suntufCanvas);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(w/(2.6/12)/1,1);
+  return new THREE.MeshStandardMaterial({map:t,color:0xffffff,roughness:.35,metalness:.05,transparent:true,opacity:.78,side:THREE.DoubleSide});}
+const tiers=[];
+[0,1,2].forEach(k=>{
+  const [xa,xb]=T_X[k], w=xb-xa, xc=(xa+xb)/2, yT=TY0-k*TP;
+  const g=new THREE.Group(); g.position.set(0,0,T_STOW); scene.add(g);
+  const pan=box(w,0.05,TL,suntufMat(w),xc,yT-0.025,TL/2,g); pan.castShadow=true;
+  [0.08,TL-0.08].forEach(z=>box(w,TBEAM,0.167,alu,xc,yT-0.05-TBEAM/2,z,g));            // front + back beams
+  for(let i=0;i<5;i++){const x=xa+0.1+i*(w-0.2)/4;box(0.167,0.167,TL-0.33,alu,x,yT-0.05-0.083,TL/2,g);}  // rafters
+  [TL/3,2*TL/3].forEach(z=>box(w-0.2,0.125,0.125,alu,xc,yT-0.05-0.0625,z,g));          // purlins
+  box(w+0.05,0.1,0.06,rim,xc,yT-0.05,TL+0.03,g);                                          // drip edge
+  // fold-down legs at the outer beam: hinge at the beam bottom, swing from flat (along x) to plumb
+  const legLen=yT-0.05-TBEAM-FLOOR, legX=k===2?[X0+4.3,xb-0.35]:[xa+0.35,xb-0.35];
+  const legs=legX.map((x,i)=>{
+    const h=new THREE.Group(); h.position.set(x,yT-0.05-TBEAM,legZ(k)); g.add(h);
+    box(0.25,legLen,0.25,legMat,0,-legLen/2,0,h);
+    box(0.5,0.06,0.5,legMat,0,-legLen+0.03,0,h);
+    h.userData.dir=(x<XC)?1:-1; return h;});
+  tiers.push({g,legs,legLen});
+});
+// ceiling tracks for tier 1 (2 x 6 ft 6 in channel), hung from the roof bows
+[T_X[0][0]+0.15,T_X[0][1]-0.15].forEach(x=>box(0.17,0.1,6.7,rim,x,TY0+0.02,-0.55));
+// leg sockets on the deck (shown only once the deck is open)
+const sockets=new THREE.Group(); scene.add(sockets);
+[0,1,2].forEach(k=>{const [xa,xb]=T_X[k];const zl=T_OUT[k]+legZ(k);const xs=k===2?[X0+4.3,xb-0.35]:[xa+0.35,xb-0.35];
+  xs.forEach(x=>box(0.3,0.1,0.3,legMat,x,FLOOR+0.05,zl,sockets));});
+function setRoof(r){   // r: 0 stowed .. 1 all three tiers out, legs down
+  const ph=k=>Math.min(1,Math.max(0,(r-k/3)*3));
+  const slide=k=>ease(ph(k)/0.72), legs=k=>ease((ph(k)-0.72)/0.28);
+  let z=[T_STOW,T_STOW,T_STOW];
+  const d0=(T_OUT[0]-T_STOW)*slide(0);
+  z[0]+=d0; z[1]+=d0; z[2]+=d0;
+  const d1=(T_OUT[1]-T_OUT[0])*slide(1); z[1]+=d1; z[2]+=d1;
+  z[2]+=(T_OUT[2]-T_OUT[1])*slide(2);
+  tiers.forEach((t,k)=>{t.g.position.z=z[k];
+    const a=legs(k); t.legs.forEach(h=>{h.rotation.z=h.userData.dir*(Math.PI/2)*(1-a); h.visible=ph(k)>0.6||r>=1;});});
+}
+// ---------- floating platforms: 10 freestanding sections on screw-jack legs, carried inside ----------
+const PLAT=[[-15,-8,-DW/2,0],[-15,-8,0,DW/2],
+  [-8,0,DW/2,8.46],[-8,0,8.46,13.33],[-8,0,13.33,ZOUT],
+  [-15,-8,DW/2,8.46],[-15,-8,8.46,13.33],[-15,-8,13.33,ZOUT],
+  [0,3,4,11.1],[0,3,11.1,ZOUT]];
+const plats=PLAT.map(([x0,x1,z0,z1],k)=>{
+  const g=new THREE.Group(); scene.add(g);
+  const w=x1-x0,d=z1-z0;
+  box(w-0.04,0.08,d-0.04,wood,0,-0.04,0,g);
+  [[w-0.04,0.32,0.17,0,-0.24,d/2-0.1],[w-0.04,0.32,0.17,0,-0.24,-d/2+0.1],[0.17,0.32,d-0.04,w/2-0.1,-0.24,0],[0.17,0.32,d-0.04,-w/2+0.1,-0.24,0]]
+    .forEach(([a,b,c,x,y,z])=>box(a,b,c,alu,x,y,z,g));
+  const legs=new THREE.Group(); g.add(legs);
+  [[-1,-1],[-1,1],[1,-1],[1,1]].forEach(([sx,sz])=>{const x=sx*(w/2-0.35),z=sz*(d/2-0.35);
+    box(0.2,FLOOR-0.4,0.2,legMat,x,-0.4-(FLOOR-0.4)/2,z,legs);box(0.5,0.05,0.5,legMat,x,-FLOOR+0.025,z,legs);});
+  const rot=d>5?Math.PI/2:0, dz=rot?w:d;                                // long narrow ones travel turned sideways
+  const stow=new THREE.Vector3(4.8,FLOOR+0.4+k*0.42,-0.5);               // stacked on the truck floor by the door
+  return {g,legs,tgt:new THREE.Vector3((x0+x1)/2,FLOOR,(z0+z1)/2),stow,w,d,rot,dz};
+});
+const _v=new THREE.Vector3();
+function setPlat(p,q){            // q 0 stowed .. 1 set on its legs
+  const e=ease(q), A=p.stow, lim=Math.max(0,3.4-p.dz/2), M1=new THREE.Vector3(-1.2,FLOOR+1.0,Math.max(-lim,Math.min(lim,p.tgt.z))), M2=p.tgt.clone().setY(FLOOR+1.2);
+  if(e<0.35)_v.lerpVectors(A,new THREE.Vector3(A.x,Math.max(A.y,FLOOR+1.0),A.z),e/0.35).lerp(M1,ease(e/0.35));
+  else if(e<0.8)_v.lerpVectors(M1,M2,ease((e-0.35)/0.45));
+  else _v.lerpVectors(M2,p.tgt,ease((e-0.8)/0.2));
+  p.g.position.copy(_v); p.g.rotation.y=p.rot*(1-ease((e-0.4)/0.35)); p.legs.visible=q>=0.999;
+}
+// ---------- shade sails over the rear deck: 2 sails, 4 guyed posts plus 2 eyes on the truck ----------
+const sailMat=new THREE.MeshStandardMaterial({color:0xcdb48a,roughness:.9,side:THREE.DoubleSide,transparent:true,opacity:.92});
+const SP=[[XR+0.3,-DW/2+0.3,11.0],[XR+0.3,4.8,11.9],[XR+0.3,ZOUT-0.25-44/12-0.4,10.9],[X0-0.4,ZOUT-0.4,11.5]];
+const TA=new THREE.Vector3(0.05,12.35,-3.85), TB=new THREE.Vector3(0.05,12.35,3.85);
+const sailPosts=SP.map(([x,z,h])=>{const g=new THREE.Group(); scene.add(g);
+  const m=cyl(0.17,h-FLOOR,rim,0,(h-FLOOR)/2,0); scene.remove(m); g.add(m);
+  box(0.6,0.06,0.6,legMat,0,0.03,0,g);
+  g.position.set(x,FLOOR,z);
+  const out=new THREE.Vector3(x<0?x-4:x+1.5,0,z<0?z-3:z>ZOUT-1?z+3:z);
+  const gl=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(x,h,z),out]),railCable); scene.add(gl);
+  return {g,gl,top:new THREE.Vector3(x,h,z),h};});
+function sailMesh(){const geo=new THREE.PlaneGeometry(1,1,14,14);const m=new THREE.Mesh(geo,sailMat);m.castShadow=true;m.receiveShadow=true;scene.add(m);return m;}
+const sails=[sailMesh(),sailMesh()];
+const sailCorners=[[TA,()=>sailPosts[0].top,()=>sailPosts[1].top,TB],[TB,()=>sailPosts[1].top,()=>sailPosts[2].top,()=>sailPosts[3].top]];
+function setSails(r){  // r 0..1: posts stand, then sails pull out from the truck corner
+  const pq=ease(r/0.4), sq=ease((r-0.4)/0.6);
+  sailPosts.forEach(p=>{p.g.visible=r>0; p.g.scale.y=Math.max(0.02,pq); p.gl.visible=pq>=0.999;});
+  sails.forEach((m,i)=>{
+    m.visible=sq>0.001;
+    const c=sailCorners[i].map(c=>typeof c==='function'?c():c), cen=c.reduce((a,b)=>a.clone().add(b)).multiplyScalar(0.25);
+    const cc=c.map(v=>v.clone().lerp(cen,0.06));                            // corners inset to the tension hardware
+    const src=cc[0]; const P=cc.map(v=>src.clone().lerp(v,sq));
+    const pos=m.geometry.attributes.position;
+    for(let iy=0;iy<=14;iy++)for(let ix=0;ix<=14;ix++){
+      const u=ix/14,w=iy/14, a=P[0].clone().lerp(P[1],u), b=P[3].clone().lerp(P[2],u), v=a.lerp(b,w);
+      v.y-=0.35*Math.sin(Math.PI*u)*Math.sin(Math.PI*w)*sq;
+      pos.setXYZ(iy*15+ix,v.x,v.y,v.z);}
+    pos.needsUpdate=true; m.geometry.computeVertexNormals();
+  });
+}
+
+// ---------- cables + sheaves ----------
+const S=[new THREE.Vector3(X0+0.2,12.35,RZ+0.45),new THREE.Vector3(X1-0.2,12.35,RZ+0.45)];
+S.forEach(p=>cyl(0.28,0.18,rim,p.x,p.y,p.z,'x'));
+const cables=S.map(()=>{
+  const g=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(),new THREE.Vector3()]);
+  const l=new THREE.Line(g,cableMat);scene.add(l);return l;
+});
+
+applyTheme();
+try{
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change',applyTheme);
+  new MutationObserver(applyTheme).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+}catch(e){}
+
+// ---------- kinematics ----------
+const W=800;
+function ftin(v){const f=Math.floor(v+1e-6);const i=Math.round((v-f)*12);return i===12?`${f+1}′ 0″`:`${f}′ ${i}″`;}
+function pose(s){
+  const th=(1-s)*Math.PI/2, c=Math.cos(th), sn=Math.sin(th);
+  A.rotation.x=-th;
+  const Hz=RZ+D*c+T*sn, Hy=FLOOR+D*sn-T*c;
+  const raw=(Hy-(FLOOR-T))/D;
+  const rolling=raw<1;
+  const psi=Math.asin(Math.min(1,Math.max(-1,raw)));
+  B.position.set(XC,Hy,Hz);B.rotation.x=psi;
+  const Ez=Hz+D*Math.cos(psi), Ey=Hy-D*Math.sin(psi);
+  const open=s>0.995, closed=s<0.005;
+  midLegs.visible=open;
+  jacksDown.visible=rolling; jacksUp.visible=!rolling;
+  if(rolling){
+    const L=Math.max(0.2,Ey-0.72);
+    jackParts.forEach(p=>{
+      p.col.scale.y=L;p.col.position.set(p.col.position.x,0.72+L/2,Ez);
+      p.wheel.position.z=Ez;p.crank.position.set(p.crank.position.x,Ey-0.6,Ez+0.3);
+    });
+  }
+  const showC=!open&&!closed;
+  cables.forEach((l,i)=>{
+    l.visible=showC;
+    const end=new THREE.Vector3(i?X1+0.12:X0-0.12,Hy,Hz);
+    l.geometry.setFromPoints([S[i],end]);
+  });
+  // tension (2D, about the floor hinge)
+  const aA=3.75*c+(T/2)*sn, FB=rolling?W/2:W, M=W*aA+FB*(Hz-RZ);
+  const hz=Hz-RZ, hy=Hy-FLOOR, sz=S[0].z-RZ, sy=S[0].y-FLOOR;
+  const arm=Math.abs(hz*sy-hy*sz)/Math.hypot(sz-hz,sy-hy);
+  const Tn=M/Math.max(arm,0.05);
+  $('rHinge').textContent=ftin(Hy);
+  $('rReach').textContent=ftin(Math.max(Hz,Ez)-4);
+  $('rTension').textContent=showC?`≈ ${Math.round(Tn/10)*10} lb`:'– (unpinned)';
+  $('rEdge').textContent=open?'On jacks, cranked down':closed?'Latched, jacks stowed':rolling?'Rolling on wheels':'Hanging, jacks folded';
+  $('stageText').textContent=open?'Open. Legs set, cables stowed, rail panels pinned in and the folding stair hooked on at the rear corner.'
+    :closed?'Closed and latched for travel. The folded deck sits in a 10 in pocket, flush with the box sides; the three roof tiers ride under the ceiling, and the 10 platforms travel stacked inside the rear door.'
+    :rolling?'Middle hinge on the cables. Outer edge rolls on the wheeled jacks at floor height.'
+    :'Wheels off the ground. Outer leaf hangs from the middle hinge; guide it with a tag line.';
+}
+
+// ---------- venue setup timeline: deck -> legs -> 9 rail panels -> stair ----------
+const P_DECK=0.22, P_LEGS=0.26, P_ROOF=0.40, P_DOOR=0.45, P_PLAT=0.60, P_RAIL=0.80, P_SAIL=0.88;
+const ease=x=>x<0?0:x>1?1:x*x*(3-2*x);
+function update(t){
+  const s=Math.min(1,t/P_DECK);
+  pose(s);
+  const legsP=ease((t-P_DECK)/(P_LEGS-P_DECK));
+  midLegs.visible=t>P_DECK;
+  midLegs.position.y=(1-legsP)*1.5;
+  const per=(P_RAIL-P_PLAT)/panels.length;
+  let active=-1;
+  panels.forEach((p,k)=>{
+    const q=(t-(P_PLAT+k*per))/per;
+    p.g.visible=q>0;
+    p.g.position.y=DECK+(1-ease(q))*2.6;
+    if(q>0&&q<1)active=k;
+  });
+  const sq=Math.min(1,(t-P_SAIL)/(1-P_SAIL));   // stair phase 0..1
+  stairPivot.visible=sq>0;
+  const lift=ease((sq-0.08)/0.30);                    // carried in flat, hooked on
+  const fold=1-ease((sq-0.42)/0.20);                  // treads swing level: stair unfolds
+  const railsUp=1-ease((sq-0.66)/0.30);               // side panels drop in last
+  setStair(lift,fold,railsUp);
+  const rq=Math.min(1,Math.max(0,(t-P_LEGS)/(P_ROOF-P_LEGS)));
+  setRoof(rq);
+  sockets.visible=t>P_DECK;
+  const dq=Math.min(1,Math.max(0,(t-P_ROOF)/(P_DOOR-P_ROOF)));
+  doorG.rotation.z=(Math.PI/2)*ease(dq/0.8); doorLegs.visible=dq>=0.8; doorLegs.scale.x=ease((dq-0.8)/0.2)+0.001;
+  const pper=(P_PLAT-P_DOOR)/plats.length; let pAct=-1;
+  plats.forEach((p,k)=>{const q=Math.min(1,Math.max(0,(t-(P_DOOR+k*pper))/pper)); setPlat(p,q); if(q>0&&q<1)pAct=k;});
+  const sr=Math.min(1,Math.max(0,(t-P_RAIL)/(P_SAIL-P_RAIL))); setSails(sr);
+  let msg=null;
+  if(t>=0.999)msg='Ready to serve: side deck under the sliding roof, rear deck under the shade sails, cable rails all the way around, stair at the far rear corner.';
+  else if(t>P_RAIL&&t<=P_SAIL)msg=sr<0.4?'Shade sails: stand the four posts in their sockets and guy each one to a ground stake.':'Shade sails: clip the corners to the posts and the two eyes on the truck, then tension them.';
+  else if(t>P_SAIL&&sq>=0.64)msg='Stair handrails: the two side panels drop into sockets on the stringers and pin. They come off first at teardown.';
+  else if(t>P_SAIL&&sq>=0.4)msg='Folding stair: the treads pivot level as the stair unfolds onto its feet. Reverse it and they fold back into line with the stringers.';
+  else if(t>P_SAIL)msg='Folding stair, folded flat (about 8 in thick): carried over and hooked onto the catch bar at the rear deck\'s outer corner.';
+  else if(active>=0)msg=`Rail panel ${active+1} of ${panels.length}, ${panels[active].where}: lower the posts into the deck sockets and drop in the lock pins.`;
+  else if(t>P_PLAT)msg='Next rail panel.';
+  else if(pAct>=0)msg=`Floating platform ${pAct+1} of 10: carry it out the rear door, set it on its four screw-jack legs and pin it to its neighbors.`;
+  else if(t>P_DOOR)msg='Next platform.';
+  else if(t>P_ROOF)msg=dq<0.8?'Rear door: lower it on its cable until it lies level with the truck floor.':'Rear door: set its two legs. It is the first 8 ft of the rear deck.';
+  else if(t>P_LEGS){const k=Math.min(2,Math.floor(rq*3)), f=rq*3-k;
+    msg=f<0.72?`Roof tier ${k+1} of 3: roll it out on its tracks${k?' from under tier '+k:' from under the ceiling'}. Crew at both ends.`:`Roof tier ${k+1}: swing its two fold-down legs down and pin them into the deck sockets.`;}
+  else if(t>P_DECK)msg='Set the five middle legs, then crank the outer jacks down off their wheels.';
+  if(msg)$('stageText').textContent=msg;
+  $('rEdge').textContent=t>P_DECK?'On jacks, cranked down':$('rEdge').textContent;
+  $('pct').textContent=Math.round(t*100)+'%';
+}
+
+// ---------- controls ----------
+let s=0, target=null;
+const slider=$('open');
+slider.addEventListener('input',()=>{target=null;s=slider.value/1000;update(s);});
+$('btnOpen').addEventListener('click',()=>{target=1;});
+$('btnClose').addEventListener('click',()=>{target=0;});
+// outer leaf: tread plate only
+const views={
+  v34:[[-24,22,42],[5,4,7]],
+  vEnd:[[-42,9,7],[3,5,7]],
+  vTop:[[5,66,7.1],[5,0,7]]
+};
+let camAnim=null;
+Object.keys(views).forEach(id=>$(id).addEventListener('click',()=>{
+  Object.keys(views).forEach(k=>$(k).setAttribute('aria-pressed',k===id?'true':'false'));
+  const [p,t]=views[id];
+  camAnim={fromP:camera.position.clone(),fromT:controls.target.clone(),toP:new THREE.Vector3(...p),toT:new THREE.Vector3(...t),k:0};
+}));
+camera.position.set(...views.v34[0]);controls.target.set(...views.v34[1]);
+
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function resize(){
+  const w=canvas.clientWidth,h=canvas.clientHeight;
+  if(!w||!h)return;
+  renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();
+  if(w<520){camera.fov=50;}else{camera.fov=38;}camera.updateProjectionMatrix();
+}
+new ResizeObserver(resize).observe(canvas);resize();
+
+let last=performance.now();
+function loop(now){
+  const dt=Math.min(0.05,(now-last)/1000);last=now;
+  if(target!==null){
+    const rate=reduce?1:0.045;
+    const step=rate*dt*(reduce?50:1);
+    s+= Math.sign(target-s)*Math.min(Math.abs(target-s),step);
+    slider.value=Math.round(s*1000);update(s);
+    if(Math.abs(target-s)<1e-4){s=target;target=null;update(s);}
+  }
+  if(camAnim){
+    camAnim.k=Math.min(1,camAnim.k+dt*(reduce?10:1.6));
+    const e=1-Math.pow(1-camAnim.k,3);
+    camera.position.lerpVectors(camAnim.fromP,camAnim.toP,e);
+    controls.target.lerpVectors(camAnim.fromT,camAnim.toT,e);
+    if(camAnim.k>=1)camAnim=null;
+  }
+  controls.update();renderer.render(scene,camera);
+  requestAnimationFrame(loop);
+}
+update(0);
+requestAnimationFrame(loop);
+})();
+</script>
+
+</html>

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Folding Stair Close-up</title>
+<style>
+:root{--bg:#EEF1EC;--panel:#ffffff;--ink:#17201C;--muted:#4D5A53;--line:#C7D0C8;--accent:#B4632A;--stage:#dfe5df}
+@media (prefers-color-scheme: dark){:root{--bg:#121815;--panel:#1B2420;--ink:#E6ECE7;--muted:#A3B0A8;--line:#2E3A34;--accent:#E0894C;--stage:#1a221e;color-scheme:dark}}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:15px/1.45 "Public Sans",system-ui,sans-serif}
+.app{display:grid;grid-template-rows:1fr auto;height:100%}
+.stage{position:relative;min-height:320px;background:var(--stage)}
+canvas{display:block;width:100%;height:100%;touch-action:none}
+.cap{position:absolute;left:14px;top:12px;right:14px;pointer-events:none}
+.cap span{display:inline-block;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);padding:6px 10px;font-size:14px;max-width:640px}
+.ctl{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;padding:10px max(14px,env(safe-area-inset-left,0px));border-top:1px solid var(--line);background:var(--panel)}
+button{font:600 14px inherit;font-family:inherit;padding:7px 12px;border:1px solid var(--line);border-radius:4px;background:var(--panel);color:var(--ink);cursor:pointer}
+button.p{background:var(--accent);border-color:var(--accent);color:#fff}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+label{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+input[type=range]{flex:1;min-width:140px;accent-color:var(--accent)}
+.v{font:13px ui-monospace,Menlo,monospace;min-width:4ch}
+body.video .ctl{display:none}
+body.video .cap{left:28px;top:24px}
+body.video .cap span{font-size:22px;padding:10px 16px;max-width:900px;border-left-width:5px}
+.ttl{position:absolute;right:28px;bottom:22px;font:600 22px Arial,sans-serif;letter-spacing:.04em;color:var(--muted);display:none}
+body.video .ttl{display:block}
+</style></head><body>
+<div class="app">
+  <div class="stage"><canvas id="c" aria-label="3D close-up of the folding stair. Drag to orbit, scroll to zoom."></canvas>
+    <div class="cap"><span id="cap">Folding stair, in use: hung on the deck's catch bar, standing on two leveling feet.</span></div>
+    <div class="ttl">BAR TRUCK · FOLDING STAIR</div></div>
+  <div class="ctl">
+    <button id="bFold">Fold for travel</button><button id="bOpen" class="p">Open for use</button>
+    <label for="fold">Treads</label><input id="fold" type="range" min="0" max="1000" value="0"><span class="v" id="fv">0°</span>
+    <button id="bRails" aria-pressed="true">Guard panels on</button>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+const G={"DECK": 48.0, "NR": 7, "RISE": 6.857142857142857, "RUN": 11.0, "NT": 6, "ALPHA": 31.938448916671888, "TD": 12.0, "CLEAR": 44.0, "SW": 2.0, "SD": 4.0, "PIV_BACK": 1.0, "PIV_DOWN": 1.5, "LINK_BACK": 9.0, "off": -1.8019332506547974, "top": [3.0, 44.00649350649351], "bot": [66.05860416841685, 4.697233765142748], "L": 74.30750608842999, "CATCH": [1.0, 44.5], "pitch": 12.962268634898187, "PT": 0.25, "UP": 2.5, "DN": 7.5, "poly": [[2.0, 47.575840274165174], [74.30916043980665, 2.5], [55.40585201391345, 2.5], [2.0, 35.79195969698501]], "FOOT_X": 64.85750622686005, "YCUT": 2.5};
+const IN=1/12, A=G.ALPHA*Math.PI/180, ca=Math.cos(A), sa=Math.sin(A);
+const cv=document.getElementById('c');
+const R=new THREE.WebGLRenderer({canvas:cv,antialias:true}); R.setPixelRatio(Math.min(2,devicePixelRatio||1)); R.shadowMap.enabled=true;
+const S=new THREE.Scene(); S.background=new THREE.Color(getComputedStyle(document.documentElement).getPropertyValue('--stage').trim()||'#dfe5df');
+const C=new THREE.PerspectiveCamera(36,1,0.05,200); const O=new THREE.OrbitControls(C,cv); O.enableDamping=true;
+S.add(new THREE.HemisphereLight(0xffffff,0x8a8f8c,.7)); const sun=new THREE.DirectionalLight(0xffffff,.8); sun.position.set(-6,12,10); sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048); Object.assign(sun.shadow.camera,{left:-10,right:10,top:10,bottom:-10}); S.add(sun);
+const M=(c,o={})=>new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:.6},o));
+const alu=M(0xb9c0c6,{metalness:.55,roughness:.38}), tread=M(0xd3d9de,{metalness:.7,roughness:.3}), steel=M(0x3b4146,{metalness:.4}),
+      orange=M(0xe2611a), cedar=M(0xb0683a,{roughness:.55}), deckM=M(0xb98a55), pinM=M(0x2a6fdb,{metalness:.3}), ground=M(0xc9cfcc,{roughness:1});
+function bx(w,h,d,m,x,y,z,p){const o=new THREE.Mesh(new THREE.BoxGeometry(w*IN,h*IN,d*IN),m);o.position.set(x*IN,y*IN,z*IN);o.castShadow=o.receiveShadow=true;(p||S).add(o);return o;}
+function cy(r,len,m,x,y,z,p){const o=new THREE.Mesh(new THREE.CylinderGeometry(r*IN,r*IN,len*IN,20),m);o.rotation.x=Math.PI/2;o.position.set(x*IN,y*IN,z*IN);o.castShadow=true;(p||S).add(o);return o;}
+const gr=new THREE.Mesh(new THREE.PlaneGeometry(40,40),ground); gr.rotation.x=-Math.PI/2; gr.receiveShadow=true; S.add(gr);
+// ---- deck end with catch bar ----
+bx(36,0.75,60,deckM,-18,G.DECK-0.375,0); bx(36,4,1.5,alu,-18,G.DECK-2.75,-29.25); bx(36,4,1.5,alu,-18,G.DECK-2.75,29.25);
+bx(0.25,4,60,alu,-0.125,G.DECK-2.75,0);                                 // deck end joist face
+cy(0.83,54,alu,G.CATCH[0],G.CATCH[1],0);                               // 1-1/4 sch 80 catch bar
+[-25,0,25].forEach(z=>bx(1.5,2.2,0.375,alu,0.5,G.CATCH[1]+0.2,z));     // bar brackets
+// ---- stringers (fixed): 1/4 x 10 in plate, hook plates at the top, leveling foot at the bottom ----
+const ZS=G.CLEAR/2+0.1+G.PT/2;
+[-1,1].forEach(s=>{
+  const sh=new THREE.Shape(G.poly.map(p=>new THREE.Vector2(p[0]*IN,p[1]*IN)));
+  const ge=new THREE.ExtrudeGeometry(sh,{depth:G.PT*IN,bevelEnabled:false});
+  const st=new THREE.Mesh(ge,alu); st.position.z=(s*ZS-G.PT/2)*IN; st.castShadow=st.receiveShadow=true; S.add(st);
+  // 3/8 in hook plate bolted to the outer face, reaching back over the catch bar; slot opens down
+  const zo=s*(ZS+G.PT/2+0.19);
+  bx(4.5,5,0.375,alu,1.6,G.CATCH[1]+0.6,zo);
+  bx(1.4,0.9,0.38,M(0x6c7378),G.CATCH[0],G.CATCH[1]+1.25,zo);
+  cy(0.25,1.2,pinM,G.CATCH[0],G.CATCH[1]-1.2,zo);                       // keeper pin under the bar
+  // leveling foot under the flat bottom cut
+  bx(3,1.2,2.5,alu,G.FOOT_X,G.YCUT+0.1,s*ZS); const sc=new THREE.Mesh(new THREE.CylinderGeometry(0.31*IN,0.31*IN,G.YCUT*IN,16),steel); sc.position.set(G.FOOT_X*IN,G.YCUT/2*IN,s*ZS*IN); S.add(sc);
+  bx(6,0.5,6,steel,G.FOOT_X,0.25,s*ZS);
+  // guard-panel sockets on the outer face
+  [10,52].forEach(x=>{const y=G.top[1]+(x-G.top[0])*(-Math.tan(A))+1; bx(2.5,8,2.5,alu,x,y,s*(ZS+G.PT/2+1.25));});
+});
+// ---- treads: each pivots at its front, rests on a rear stop, all tied to a link bar ----
+const treads=[];
+for(let i=1;i<=G.NT;i++){
+  const px=G.RUN*i-G.PIV_BACK, py=G.DECK-G.RISE*i-G.PIV_DOWN;
+  const g=new THREE.Group(); g.position.set(px*IN,py*IN,0); S.add(g); treads.push(g);
+  bx(12,0.1875,G.CLEAR-0.6,tread,-5,1.41,0,g);                     // 3/16 diamond plate, 12 in deep
+  bx(0.19,1.0,G.CLEAR-0.6,tread,0.9,0.9,0,g);                        // 1 in bent nosing
+  bx(2,1,G.CLEAR-1.2,alu,-0.8,0.8,0,g); bx(2,1,G.CLEAR-1.2,alu,-9.6,0.8,0,g);   // two 2x1x1/8 tubes
+  bx(0.19,2.5,G.CLEAR-0.6,tread,-10.9,0.1,0,g);                      // rear kick plate: closes the open riser below 4 in
+  [-1,1].forEach(s=>{
+    bx(11,2.8,0.25,alu,-4.6,0,s*(G.CLEAR/2-0.45),g);                 // 1/4 in end plate (pivot ear)
+    cy(0.25,1.6,steel,0,0,s*(G.CLEAR/2+0.3),g);                      // 1/2 in SS shoulder bolt: front pivot
+    cy(0.19,1.2,steel,-G.LINK_BACK,0,s*(G.CLEAR/2-1.0),g);            // 3/8 in link pin
+  });
+  // rear stop lugs, fixed to the stringers
+  [-1,1].forEach(s=>bx(2,0.75,0.75,orange,px-10,py-1.82,s*(G.CLEAR/2-0.2)));
+}
+// ---- link bars (one each side, inside the end plates) ----
+const links=[-1,1].map(s=>{const m=new THREE.Mesh(new THREE.BoxGeometry((5*G.pitch+8)*IN,1.5*IN,0.25*IN),orange);S.add(m);m.castShadow=true;m.userData.s=s;return m;});
+const lockPin=[-1,1].map(s=>cy(0.25,2,pinM,0,0,s*(G.CLEAR/2-1.0)));
+// ---- removable guard / handrail panels ----
+const rails=new THREE.Group(); S.add(rails);
+[-1,1].forEach(s=>{
+  const z=s*(ZS+G.PT/2+1.25), yAt=x=>G.top[1]+(x-G.top[0])*(-Math.tan(A));
+  [10,52].forEach(x=>bx(2,36+8,2,alu,x,yAt(x)+1+18,z,rails));
+  const x0=8,x1=54,len=Math.hypot(x1-x0,yAt(x0)-yAt(x1));
+  const hr=bx(len+14,1.5,1.5,cedar,(x0+x1)/2,(yAt(x0)+yAt(x1))/2+36+5.2,z,rails); hr.rotation.z=-A;   // handrail ~36 in above nosings
+  const tr=bx(len,1.5,1.5,alu,(x0+x1)/2,(yAt(x0)+yAt(x1))/2+36+3.7,z,rails); tr.rotation.z=-A;
+  const pts=[]; for(let k=0;k<10;k++){const o=4+k*3.2; pts.push(new THREE.Vector3(x0*IN,(yAt(x0)+o)*IN,z*IN),new THREE.Vector3(x1*IN,(yAt(x1)+o)*IN,z*IN));}
+  rails.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color:0x7d878d})));
+});
+// ---- pose ----
+const fs=document.getElementById('fold'), fv=document.getElementById('fv'), cap=document.getElementById('cap');
+let railsOn=true, railsT=0;
+function pose(f){          // f 0 = treads level (in use), 1 = folded in line with the stringers
+  const ph=f*A;
+  treads.forEach(g=>g.rotation.z=-ph);
+  // link pin of tread 1 after rotation: pivot + R(-ph)*(-9,0)
+  const p1x=G.RUN-G.PIV_BACK, p1y=G.DECK-G.RISE-G.PIV_DOWN;
+  const lx=p1x-G.LINK_BACK*Math.cos(ph), ly=p1y+G.LINK_BACK*Math.sin(ph);
+  links.forEach(m=>{m.rotation.z=-A; const c=lx+(5*G.pitch/2)*ca, d=ly-(5*G.pitch/2)*sa; m.position.set(c*IN,d*IN,m.userData.s*(G.CLEAR/2-1.0)*IN);});
+  const bx6=lx+5*G.pitch*ca+2.5*ca, by6=ly-5*G.pitch*sa-2.5*sa;
+  lockPin.forEach((p,k)=>{p.position.set(bx6*IN,by6*IN,(k?1:-1)*(G.CLEAR/2-1.0)*IN);p.visible=f<0.02;});
+  fv.textContent=Math.round(ph*180/Math.PI)+'°';
+}
+function setRails(t){rails.position.y=t*30*IN; rails.visible=t<0.999;}
+let f=0,target=null;
+fs.addEventListener('input',()=>{target=null;f=fs.value/1000;pose(f);caption();});
+document.getElementById('bFold').onclick=()=>{target=1;};
+document.getElementById('bOpen').onclick=()=>{target=0;};
+const br=document.getElementById('bRails');
+br.onclick=()=>{railsOn=!railsOn;br.setAttribute('aria-pressed',railsOn);br.textContent=railsOn?'Guard panels on':'Guard panels off';};
+function caption(){cap.textContent=f<0.02?'In use: each tread rests on its rear stop. The blue lock pin holds the link bar so the treads cannot be lifted.':
+  f>0.98?'Folded: the treads lie in line with the stringers, inside the 10 in plate stringers. The stair carries flat.':
+  'Folding: pull the lock pin and push the orange link bar up-slope. Every tread swings on its front pivot together.';}
+C.position.set(9,6.5,9); O.target.set(3,2,0); C.lookAt(O.target);
+function rs(){const w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return;R.setSize(w,h,false);C.aspect=w/h;C.updateProjectionMatrix();}
+new ResizeObserver(rs).observe(cv); rs();
+pose(0); caption();
+let last=performance.now();
+function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;
+  if(target!==null){f+=Math.sign(target-f)*Math.min(Math.abs(target-f),dt*0.5);fs.value=Math.round(f*1000);pose(f);caption();if(Math.abs(target-f)<1e-4)target=null;}
+  const rt=railsOn?0:1; if(Math.abs(railsT-rt)>1e-3){railsT+=Math.sign(rt-railsT)*Math.min(Math.abs(rt-railsT),dt*1.2);setRails(railsT);}
+  O.update();R.render(S,C);requestAnimationFrame(loop);}
+requestAnimationFrame(loop);
+window.__set=(ff,rt,p,q,c)=>{f=ff;target=null;pose(ff);railsT=rt;setRails(rt);C.position.set(...p);O.target.set(...q);C.lookAt(O.target);if(c)cap.textContent=c;R.render(S,C);return true;};
+window.__ready=true;
+})();
+</script></body></html>

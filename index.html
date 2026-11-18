@@ -1,0 +1,369 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Bar Truck Build</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="A 26 ft box truck that unfolds into a 670 sq ft deck and bar. Videos, 3D models and the build, for makers who want to help.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500;62..125,700;62..125,800&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: shop-drawing feel. One narrow reading column, wide media bands, specs set like dimension callouts. */
+:root{
+  --bg:#EEF1EC; --panel:#E2E7E0; --ink:#17201C; --muted:#4D5A53; --line:#C7D0C8;
+  --forest:#2E5A47; --cedar:#B4632A; --cedar-ink:#8E4A1C; --onaccent:#FFFFFF; --steel:#6E8A9A; --sand:#CDB98E;
+  --display:"Archivo","Arial Narrow",Arial,sans-serif;
+  --body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --wrap:1120px; --read:68ch;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121815; --panel:#1B2420; --ink:#E6ECE7; --muted:#A3B0A8; --line:#2E3A34;
+  --forest:#7FB89D; --cedar:#E0894C; --cedar-ink:#F0A472; --onaccent:#121815; --steel:#8FAFC2; --sand:#BFA978; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121815; --panel:#1B2420; --ink:#E6ECE7; --muted:#A3B0A8; --line:#2E3A34;
+  --forest:#7FB89D; --cedar:#E0894C; --cedar-ink:#F0A472; --onaccent:#121815; --steel:#8FAFC2; --sand:#BFA978; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+a{color:var(--cedar-ink)}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--cedar);outline-offset:3px;border-radius:4px}
+h1,h2,h3{font-family:var(--display);font-stretch:75%;line-height:1.02;letter-spacing:-.005em;text-wrap:balance;margin:0}
+h1{font-size:clamp(46px,8.2vw,96px);font-weight:800;text-transform:uppercase}
+h2{font-size:clamp(34px,5vw,54px);font-weight:800;text-transform:uppercase}
+h3{font-size:26px;font-weight:700;font-stretch:85%}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--forest)}
+.lede{font-size:clamp(18px,2.2vw,21px);color:var(--muted);max-width:var(--read)}
+
+/* nav */
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--bg);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;gap:20px;padding-block:12px;overflow-x:auto;scrollbar-width:none}
+nav .mark{font-family:var(--display);font-stretch:75%;font-weight:800;text-transform:uppercase;font-size:20px;white-space:nowrap;margin-right:auto}
+nav a{font-family:var(--mono);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-decoration:none;white-space:nowrap}
+nav a:hover{color:var(--ink)}
+
+/* hero */
+.hero{padding-block:56px 40px;display:grid;gap:26px}
+.hero-img{display:block;width:100%;max-width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:6px;border:1px solid var(--line)}
+.specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));border-top:2px solid var(--ink);border-bottom:1px solid var(--line)}
+.spec{padding:14px 14px 14px 0;display:grid;gap:4px;min-width:0}
+.spec b{font-family:var(--mono);font-weight:500;font-size:20px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.spec span{font-size:14px;color:var(--muted);line-height:1.35}
+
+section{padding-block:64px;border-top:1px solid var(--line)}
+.head{display:grid;gap:12px;margin-bottom:30px}
+
+/* videos */
+.films{display:grid;gap:24px}
+.film{display:grid;gap:10px;min-width:0}
+.film video{width:100%;max-width:100%;aspect-ratio:16/9;background:#000;border-radius:6px;display:block}
+.film figcaption{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
+.film figcaption strong{font-family:var(--display);font-stretch:85%;font-size:22px;font-weight:700}
+.film figcaption span{color:var(--muted);font-size:15px}
+.film figcaption .t{font-family:var(--mono);font-size:13px;color:var(--forest)}
+.films-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+
+/* sims */
+.simtabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.simtabs button{font:600 15px var(--body);padding:9px 16px;border-radius:999px;border:1.5px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+.simtabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.simframe{width:100%;max-width:100%;aspect-ratio:16/10;border:1px solid var(--line);border-radius:6px;background:var(--panel);display:block}
+.simnote{margin-top:12px;color:var(--muted);font-size:15px;display:flex;flex-wrap:wrap;gap:6px 16px}
+
+/* sequence */
+.seq{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:28px 20px;counter-reset:step}
+.step{display:grid;gap:10px;align-content:start;min-width:0}
+.step img{width:100%;max-width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:6px;border:1px solid var(--line)}
+.step h3{display:flex;gap:10px;align-items:baseline}
+.step h3::before{counter-increment:step;content:counter(step);font-family:var(--mono);font-size:14px;font-weight:500;color:var(--cedar-ink)}
+.step p{color:var(--muted);font-size:16px}
+
+/* systems */
+.systems{display:grid;gap:0;border-top:2px solid var(--ink)}
+.sys{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:18px 36px;padding-block:26px;border-bottom:1px solid var(--line)}
+.sys .lbl{display:grid;gap:8px;align-content:start}
+.sys .lbl p{color:var(--muted);font-size:16px}
+.sys ul{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.sys li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px;padding-bottom:7px;border-bottom:1px dashed var(--line);font-size:15.5px}
+.sys li:last-child{border-bottom:0}
+.sys li code{font-family:var(--mono);font-size:13.5px;color:var(--forest);text-align:right}
+.skills{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.skills span{font-family:var(--mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:4px;background:var(--panel);color:var(--ink)}
+@media (max-width:760px){.sys{grid-template-columns:1fr}.sys li{grid-template-columns:1fr}.sys li code{text-align:left}}
+
+/* open problems */
+.probs{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.prob{background:var(--panel);border-radius:6px;padding:20px 22px;display:grid;gap:8px;align-content:start}
+.prob h3{font-size:22px}
+.prob p{color:var(--muted);font-size:16px}
+.prob .tag{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--cedar-ink)}
+
+.weight{margin-top:30px;display:grid;gap:10px;max-width:760px}
+.bar{height:22px;border-radius:4px;background:var(--panel);border:1px solid var(--line);overflow:hidden;display:flex}
+.bar i{display:block;height:100%}
+.bar .a{background:var(--forest);width:79.1%}
+.bar .b{background:var(--cedar);width:17%}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;color:var(--muted)}
+.legend span.nosw::before{display:none}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:0;background:var(--c)}
+
+/* lighter build */
+.budget{display:grid;gap:14px;margin-bottom:36px;max-width:900px}
+.brow{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr) auto;gap:14px;align-items:center}
+.blabel{font-weight:600;font-size:15px;line-height:1.3;display:grid}
+.blabel small{font-weight:400;color:var(--muted);font-size:13px}
+.bval{font-family:var(--mono);font-size:15px;font-variant-numeric:tabular-nums}
+.budget .bar{height:26px;position:relative}
+.budget .bar .pl{position:absolute;left:83.3%;top:0;bottom:0;width:3px;background:var(--ink)}
+.bval.over{color:var(--cedar-ink);font-weight:500}
+@media (max-width:620px){.brow{grid-template-columns:1fr auto}.brow .bar{grid-column:1/-1;grid-row:2}}
+.pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:22px}
+.pillar{background:var(--panel);border-radius:6px;padding:22px 24px;display:grid;gap:12px;align-content:start;min-width:0}
+.pillar p{color:var(--muted);font-size:16px}
+.swaps{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.swaps li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding-bottom:8px;border-bottom:1px dashed var(--line);font-size:15px}
+.swaps li span{color:var(--muted);grid-column:1}
+.swaps li b{font-weight:600;grid-column:1}
+.swaps li em{font-style:normal;font-family:var(--mono);font-size:14px;color:var(--forest);grid-column:2;grid-row:1/3;align-self:center}
+.pillar .fine{font-size:14px}
+
+footer{border-top:2px solid var(--ink);padding-block:28px 48px;color:var(--muted);font-size:15px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+
+/* stair shop drawings */
+.dwgs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,480px),1fr));gap:22px;margin-block:28px}
+.dwgs figure{margin:0;min-width:0}
+.dwgs figcaption{font-family:var(--mono);font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.dwgs figcaption b{color:var(--cedar-ink);margin-right:6px}
+.dwg{overflow-x:auto;background:var(--panel);border-radius:6px;border:1px solid var(--line);color:var(--ink)}
+svg.shop{display:block;width:100%;min-width:440px;height:auto}
+.shop text{font:11px var(--body);fill:currentColor}.shop .lbl{font-weight:700}
+.shop .dim line{stroke:currentColor;stroke-width:1}.shop .note line{stroke:var(--cedar-ink);stroke-width:1}.shop .note circle{fill:var(--cedar-ink)}.shop .note text{fill:var(--cedar-ink)}
+.shop .gnd{stroke:currentColor;stroke-width:1.5}.shop .deck{fill:var(--sand);stroke:currentColor}.shop .bar{fill:var(--steel);stroke:currentColor}
+.shop .str{fill:color-mix(in srgb,var(--steel) 28%,transparent);stroke:currentColor;stroke-width:1.2}.shop .hook{fill:var(--steel);stroke:currentColor}
+.shop .foot{fill:var(--muted)}.shop .thin{stroke:currentColor;stroke-width:1;fill:none}.shop .dash{stroke-dasharray:4 3}
+.shop .tread{fill:color-mix(in srgb,var(--steel) 45%,var(--bg));stroke:currentColor;stroke-width:.8}.shop .tube{fill:var(--steel);stroke:currentColor;stroke-width:.6}.shop .endp{fill:color-mix(in srgb,var(--steel) 18%,transparent);stroke:currentColor;stroke-width:.6;stroke-dasharray:3 2}
+.shop .piv{fill:var(--ink)}.shop .lnk{fill:var(--cedar)}.shop .stop{fill:var(--cedar)}.shop .link{stroke:var(--cedar);stroke-width:3}
+.cut{margin-top:28px;display:grid;gap:12px}
+.tscroll{overflow-x:auto;border-top:2px solid var(--ink)}
+.cut table{border-collapse:collapse;width:100%;min-width:640px;font-size:15px}
+.cut th,.cut td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.cut th{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.cut td:first-child{font-family:var(--mono);color:var(--cedar-ink)}
+.cut td:last-child{font-family:var(--mono);text-align:right}
+.files{margin-top:28px}.files ul{padding-left:20px;color:var(--muted)}
+</style>
+
+<nav aria-label="Sections"><div class="wrap">
+  <span class="mark">Bar Truck Build</span>
+  <a href="#goals">Goals</a><a href="#targets">Targets</a><a href="#decisions">Open decisions</a><a href="#ideas">Ideas</a><a href="#watch">Concept films</a><a href="#model">3D model</a><a href="#files">Reference files</a>
+</div></nav>
+
+<header class="wrap hero" id="top">
+  <p class="eyebrow">A community build · Eugene, Oregon</p>
+  <h1>A box truck that opens into a deck and bar</h1>
+  <p class="lede">The goal is a used box truck that becomes a mobile bar with a railed deck for a crowd, packs everything inside for travel, and sets up with a small crew. The films and model show one concept. Materials, mechanisms and methods are open.</p>
+  <img class="hero-img" src="img/hero.jpg" alt="Concept render of the truck open in a forest clearing, with a railed deck, a roof over the side deck, a shade sail over the rear deck and a stair.">
+</header>
+
+<section id="goals"><div class="wrap">
+  <div class="head">
+    <p class="eyebrow">Goals</p>
+    <h2>What the build has to do</h2>
+  </div>
+  <div class="probs">
+    <div class="prob"><span class="tag">Travel</span><h3>Pack up for the road</h3><p>Deck, cover, railings, stairs, bar and seating all ride in or on the truck, secured for the road, on a regular driver's license.</p></div>
+    <div class="prob"><span class="tag">Deck</span><h3>Open into a venue</h3><p>A level, railed deck of roughly 670 sq ft at the truck's floor height, set up on uneven ground.</p></div>
+    <div class="prob"><span class="tag">Safety</span><h3>Carry a crowd</h3><p>Meet the building-code crowd load for assembly platforms, with railings and exits that pass an inspection, and an engineer's stamp.</p></div>
+    <div class="prob"><span class="tag">Weather</span><h3>Keep rain and sun off</h3><p>Cover over part of the deck, safe to take down in high wind, and weather-tight on the road.</p></div>
+    <div class="prob"><span class="tag">Bar</span><h3>Work as a bar</h3><p>A bar counter, power for a full event without a running generator, ice, hand and wash sinks, and tables and seating.</p></div>
+    <div class="prob"><span class="tag">Weight</span><h3>Stay under payload</h3><p>The build, seating, tables, ice, drinks, water and crew all ride in the one truck, within its rated payload. No support vehicle.</p></div>
+    <div class="prob"><span class="tag">Setup</span><h3>Set up with a small crew</h3><p>Open and pack up in reasonable time with simple tools and few loose parts.</p></div>
+    <div class="prob"><span class="tag">Structure</span><h3>Keep the truck sound</h3><p>Any opening cut into the box restores its strength, so the truck stays safe to drive.</p></div>
+  </div>
+</div></section>
+
+<section id="targets"><div class="wrap">
+  <div class="head">
+    <p class="eyebrow">Targets</p>
+    <h2>Numbers the design has to meet</h2>
+  </div>
+  <div class="specs" role="list">
+    <div class="spec" role="listitem"><b>≤ 26,000 lb</b><span>truck GVWR, so no CDL is needed</span></div>
+    <div class="spec" role="listitem"><b>≤ payload</b><span>build plus event load; typical 26 ft trucks carry about 10,000 lb</span></div>
+    <div class="spec" role="listitem"><b>≈ 670 sq ft</b><span>of deck</span></div>
+    <div class="spec" role="listitem"><b>100 psf</b><span>crowd load for assembly platforms; 200 lb push at the top of railings</span></div>
+    <div class="spec" role="listitem"><b>2 exits</b><span>44 in clear each, for more than 49 people</span></div>
+    <div class="spec" role="listitem"><b>≈ 136 people</b><span>standing, with two exits</span></div>
+  </div>
+</div></section>
+
+<section id="decisions"><div class="wrap">
+  <div class="head">
+    <p class="eyebrow">Open decisions</p>
+    <h2>Open design questions</h2>
+    <p class="lede">The concept answers each of these one way. Every one of them is still open.</p>
+  </div>
+  <div class="probs">
+    <div class="prob"><span class="tag">Vehicle</span><h3>Which truck</h3><p>Make, age and payload of the base truck.</p></div>
+    <div class="prob"><span class="tag">Deck</span><h3>How the deck deploys</h3><p>Fold-out, slide-out, separate platforms or a mix, and how it lowers and levels.</p></div>
+    <div class="prob"><span class="tag">Materials</span><h3>What it is made of</h3><p>Aluminum, steel, wood or composites for the frame, decking and railings.</p></div>
+    <div class="prob"><span class="tag">Cover</span><h3>Roof and shade</h3><p>Sliding roof, awning, sails or tents, and how each handles wind and rain.</p></div>
+    <div class="prob"><span class="tag">Access</span><h3>Stairs and exits</h3><p>Stair design, placement and how the stairs stow.</p></div>
+    <div class="prob"><span class="tag">Bar</span><h3>Bar and power</h3><p>Bar layout, battery or generator power, water and sinks.</p></div>
+  </div>
+</div></section>
+
+<section id="ideas"><div class="wrap">
+  <div class="head">
+    <p class="eyebrow">Ideas on the table</p>
+    <h2>Options the concept explores</h2>
+    <p class="lede">Each idea below has a film in the next section, along with close-ups of how the parts mount and pack. None of them is decided.</p>
+  </div>
+  <div class="probs">
+    <div class="prob"><span class="tag">Small venues</span><h3>Side deck only</h3><p>The same rail panels close the side deck's rear end, and the rear stair hooks on there. The platforms and extra rails stay stacked at the venue. About half the setup and teardown work, for smaller events at a lower price.</p></div>
+    <div class="prob"><span class="tag">Live music</span><h3>A stage on the rear deck</h3><p>A band plays under the shade sails, facing the audience on the lawn. The rear stair can hook on at the back of the stage as a backstage stair, and a standard rail panel fills its usual spot.</p></div>
+    <div class="prob"><span class="tag">Travel</span><h3>The bar frame holds the load</h3><p>The folded bar frame works as a headboard for the platform stack. Platforms pin together, rail panels stand in floor sockets, the stairs hang on a catch bar, and a few straps finish the job.</p></div>
+    <div class="prob"><span class="tag">Roof</span><h3>Manual or automated</h3><p>Manual: two workers roll each tier out on its tracks and pin the legs. Automated: motors, belts and leg actuators on one button, with a wind sensor that pulls the roof in. Automation is faster, but adds cost, wiring and battery load.</p></div>
+    <div class="prob"><span class="tag">Weight</span><h3>Carbon fiber where it counts</h3><p>Carbon fiber roof beams, rafters and legs, sail posts and rail posts, with honeycomb stair treads and a lighter floor and wall finish. About 1,600 lb lighter, enough to carry everything in the one truck. About $19,000 more in materials.</p></div>
+    <div class="prob"><span class="tag">Labor</span><h3>Setup time</h3><p>Rough estimate for a trained crew: about 20 man-hours to set up and tear down the full venue, and about 10 for a small venue.</p></div>
+  </div>
+</div></section>
+
+<section id="watch"><div class="wrap">
+  <div class="head">
+    <p class="eyebrow">Concept films</p>
+    <h2>One way it could work</h2>
+    <p class="lede">These films show one worked concept, to make the goals concrete. They are a starting point, not a decision.</p>
+  </div>
+  <div class="films">
+    <div class="films-2">
+      <figure class="film" style="margin:0">
+        <video controls preload="none" playsinline poster="img/poster-open.jpg" src="media/open-for-business.mp4"></video>
+        <figcaption><strong>Open for business</strong><span>The concept open at dusk</span><span class="t">0:36</span></figcaption>
+      </figure>
+      <figure class="film" style="margin:0">
+        <video controls preload="none" playsinline poster="img/poster-bar.jpg" src="media/inside-the-bar.mp4"></video>
+        <figcaption><strong>Inside the bar</strong><span>The bar inside the box</span><span class="t">0:33</span></figcaption>
+      </figure>
+    </div>
+    <figure class="film" style="margin:0">
+      <video controls preload="none" playsinline poster="img/poster-packed.jpg" src="media/packed-for-the-road.mp4"></video>
+      <figcaption><strong>Packed for the road</strong><span>How everything could pack inside for travel</span><span class="t">0:35</span></figcaption>
+    </figure>
+    <div class="films-2">
+      <figure class="film" style="margin:0">
+        <video controls preload="none" playsinline poster="img/poster-live.jpg" src="media/live-music.mp4"></video>
+        <figcaption><strong>Live music</strong><span>A band on the rear deck under the shade sails, with the stair at the back of the stage</span><span class="t">0:26</span></figcaption>
+      </figure>
+      <figure class="film" style="margin:0">
+        <video controls preload="none" playsinline poster="img/poster-small.jpg" src="media/small-venue.mp4"></video>
+        <figcaption><strong>Small venue</strong><span>Side deck only: the platforms, rear rails and sails stay stacked</span><span class="t">0:19</span></figcaption>
+      </figure>
+    </div>
+    <div class="films-2">
+      <figure class="film" style="margin:0">
+        <video controls preload="none" playsinline poster="img/poster-small-setup.jpg" src="media/small-venue-setup.mp4"></video>
+        <figcaption><strong>Small venue setup and teardown</strong><span>Unused decking offloaded and stacked at the venue, side deck set up, then everything reloaded</span><span class="t">1:02</span></figcaption>
+      </figure>
+      <figure class="film" style="margin:0">
+        <video controls preload="none" playsinline poster="img/poster-secured.jpg" src="media/secured-for-the-road.mp4"></video>
+        <figcaption><strong>Secured for the road</strong><span>The bar frame, sockets and catch bar hold the stored decking in place</span><span class="t">0:43</span></figcaption>
+      </figure>
+    </div>
+    <div class="films-2">
+      <figure class="film" style="margin:0">
+        <video controls preload="none" playsinline poster="img/poster-roof-manual.jpg" src="media/roof-manual.mp4"></video>
+        <figcaption><strong>Roof, manual</strong><span>Two workers roll each tier out and pin the legs</span><span class="t">0:33</span></figcaption>
+      </figure>
+      <figure class="film" style="margin:0">
+        <video controls preload="none" playsinline poster="img/poster-roof-auto.jpg" src="media/roof-automated.mp4"></video>
+        <figcaption><strong>Roof, automated</strong><span>Motors, belts and leg actuators on one button, with a wind sensor</span><span class="t">0:33</span></figcaption>
+      </figure>
+    </div>
+    <h3 class="closeups" style="margin:40px 0 4px">Close-ups</h3>
+    <p class="lede" style="margin:0 0 20px">How the loose parts mount, lock and pack.</p>
+    <div class="films-2">
+      <figure class="film" style="margin:0">
+        <video controls preload="none" playsinline poster="img/poster-rail-mount.jpg" src="media/rail-mount.mp4"></video>
+        <figcaption><strong>Railings</strong><span>Posts drop into deck-edge sockets and lock with ball-lock pins</span><span class="t">0:24</span></figcaption>
+      </figure>
+      <figure class="film" style="margin:0">
+        <video controls preload="none" playsinline poster="img/poster-table-mount.jpg" src="media/table-mount.mp4"></video>
+        <figcaption><strong>Tables</strong><span>High-top posts drop into flush deck sockets and lock with a spring pin</span><span class="t">0:16</span></figcaption>
+      </figure>
+    </div>
+    <div class="films-2">
+      <figure class="film" style="margin:0">
+        <video controls preload="none" playsinline poster="img/poster-stair.jpg" src="media/stair-closeup.mp4"></video>
+        <figcaption><strong>Stairs</strong><span>The stair hooks onto the deck edge and drops its legs</span><span class="t">0:18</span></figcaption>
+      </figure>
+      <figure class="film" style="margin:0">
+        <video controls preload="none" playsinline poster="img/poster-bar-fold.jpg" src="media/bar-fold.mp4"></video>
+        <figcaption><strong>Bar</strong><span>Modules roll out, tops hinge up on brackets, drop pins lock them; fold down in reverse</span><span class="t">0:22</span></figcaption>
+      </figure>
+    </div>
+    <div class="films-2">
+      <figure class="film" style="margin:0">
+        <video controls preload="none" playsinline poster="img/poster-loading.jpg" src="media/loading.mp4"></video>
+        <figcaption><strong>Loading for travel</strong><span>Platforms go in bottom first and pin together, then rails, stairs, straps and a load bar</span><span class="t">0:38</span></figcaption>
+      </figure>
+    </div>
+    <div class="films-2">
+      <figure class="film" style="margin:0">
+        <video controls preload="none" playsinline poster="img/poster-woodland.jpg" src="media/woodland.mp4"></video>
+        <figcaption><strong>Setup and teardown, woodland</strong><span>Closed truck to open venue and back</span><span class="t">1:41</span></figcaption>
+      </figure>
+      <figure class="film" style="margin:0">
+        <video controls preload="none" playsinline poster="img/poster-wraparound.jpg" src="media/wraparound.mp4"></video>
+        <figcaption><strong>Setup and teardown, studio</strong><span>Same sequence, plain background</span><span class="t">1:41</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</div></section>
+
+<section id="model"><div class="wrap">
+  <div class="head">
+    <p class="eyebrow">Explore in 3D</p>
+    <h2>Interactive 3D model</h2>
+    <p class="lede">The concept's deck mechanism. Drag to look around, scroll to zoom, and press Open or Close to run the setup.</p>
+  </div>
+  <div class="simtabs" role="tablist" aria-label="3D models">
+    <button id="tab-wrap" role="tab" aria-selected="true" data-src="sims/wraparound.html">Wraparound deck</button>
+  </div>
+  <iframe id="sim" class="simframe" src="sims/wraparound.html" title="3D model of the bar truck" loading="lazy"></iframe>
+  <p class="simnote"><span>Works best on a laptop or desktop.</span><a id="simfull" href="sims/wraparound.html" target="_blank" rel="noopener">Open the model full screen</a></p>
+</div></section>
+
+<section id="files"><div class="wrap">
+  <div class="head">
+    <p class="eyebrow">Reference files</p>
+    <h2>The concept, for reference</h2>
+    <p class="lede">The worked concept behind the films. Use it as a reference, not as a plan.</p>
+  </div>
+  <div class="files">
+    <ul>
+      <li><a href="https://bar-truck-build.netlify.app/files/Bar-Truck-Concept-Materials.xlsx">Concept materials list and weight budget (Excel)</a></li>
+      <li><a href="https://bar-truck-build.netlify.app/files/bar_truck_CAD_FreeCAD_OpenSCAD.zip">Concept CAD: deck hinge and folding stair (FreeCAD, OpenSCAD)</a></li>
+    </ul>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <span>Bar Truck Build · Chuck Edson · Eugene, Oregon</span>
+  <span>Concept renders and models, November 2026. Not engineered or built.</span>
+</div></footer>
+
+<script>
+(function(){
+  var tabs=document.querySelectorAll('.simtabs button'), f=document.getElementById('sim'), full=document.getElementById('simfull');
+  tabs.forEach(function(b){b.addEventListener('click',function(){
+    tabs.forEach(function(x){x.setAttribute('aria-selected',x===b?'true':'false')});
+    f.src=b.dataset.src; full.href=b.dataset.src;
+  });});
+})();
+</script>
+
+</body></html>

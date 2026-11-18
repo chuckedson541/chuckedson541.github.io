@@ -4,4 +4,4 @@ A used 26 ft box truck that opens into a railed deck and bar. Concept films, an 
 
 Live site: https://chuckedson541.github.io/
 
-Chuck Edson · Eugene, Oregon
+Max Edson · Eugene, Oregon

@@ -1,0 +1,597 @@
+<!doctype html><html><head><meta charset=utf8><meta name="robots" content="noindex,nofollow"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>The Bar Truck Investor Room</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Domine:wght@500;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap">
+<style>
+/* Layout: a dark forest-green opening band with the woodland film, then alternating paper sections, one job each, ending in a document shelf and the ask. */
+:root{
+  --paper:#F6F2EA; --paper-2:#ECE5D7; --ink:#1C2620; --ink-2:#4A5650; --line:#D9D0BE;
+  --forest:#1E2B22; --forest-2:#2A3A2F; --on-forest:#F3EEE4; --on-forest-2:#BFC8BC;
+  --rust:#A3561F; --rust-2:#E3A06B; --good:#3F6B45; --warn:#9A6A12;
+  --display:"Domine", Georgia, "Times New Roman", serif;
+  --body:"Nunito Sans", "Segoe UI", Helvetica, Arial, sans-serif;
+  --wrap:1180px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#141B16; --paper-2:#1B241E; --ink:#ECE7DC; --ink-2:#AEB8AE; --line:#2E3B32;
+  --forest:#0E1510; --forest-2:#1A251D; --on-forest:#F3EEE4; --on-forest-2:#AEB8AE;
+  --rust:#E09A62; --rust-2:#E9AE7C; --good:#8DBE8F; --warn:#E0B356; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#141B16; --paper-2:#1B241E; --ink:#ECE7DC; --ink-2:#AEB8AE; --line:#2E3B32;
+  --forest:#0E1510; --forest-2:#1A251D; --on-forest:#F3EEE4; --on-forest-2:#AEB8AE;
+  --rust:#E09A62; --rust-2:#E9AE7C; --good:#8DBE8F; --warn:#E0B356; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--forest)}
+a{color:inherit}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-left:max(20px, env(safe-area-inset-left,0px));padding-right:max(20px, env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.12;text-wrap:balance;margin:0}
+h2{font-size:clamp(28px,3.4vw,40px)}
+h3{font-size:20px}
+p{margin:0}
+.lede{color:var(--ink-2);max-width:64ch;font-size:18px}
+.label{font-family:var(--body);font-size:13px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--rust)}
+.num{font-variant-numeric:tabular-nums}
+:focus-visible{outline:3px solid var(--rust-2);outline-offset:3px;border-radius:4px}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--forest);color:var(--on-forest);border-bottom:1px solid rgba(255,255,255,.08)}
+.nav .wrap{display:flex;align-items:center;gap:24px;padding-block:12px}
+.brand{font-family:var(--display);font-weight:700;font-size:18px;text-decoration:none;white-space:nowrap}
+.nav ul{display:flex;gap:4px;list-style:none;margin:0 0 0 auto;padding:0;overflow-x:auto;scrollbar-width:none;min-width:0}
+.nav ul::-webkit-scrollbar{display:none}
+.nav a.tab{display:block;padding:6px 10px;border-radius:6px;font-size:14px;font-weight:700;color:var(--on-forest-2);text-decoration:none;white-space:nowrap}
+.nav a.tab:hover{color:var(--on-forest);background:rgba(255,255,255,.07)}
+
+/* hero */
+.hero{background:var(--forest);color:var(--on-forest)}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:48px;align-items:center;padding-block:56px 64px}
+.hero .label{color:var(--rust-2)}
+.hero h1{font-size:clamp(38px,5vw,62px);margin:12px 0 18px}
+.hero .lede{color:var(--on-forest-2)}
+.hero-film{position:relative;border-radius:14px;overflow:hidden;background:#000;aspect-ratio:16/9;max-width:100%;box-shadow:0 30px 60px -30px rgba(0,0,0,.7)}
+.hero-film video{width:100%;height:100%;object-fit:cover;display:block}
+.film-cap{position:absolute;left:14px;bottom:12px;font-size:13px;font-weight:700;color:#fff;background:rgba(14,21,16,.7);padding:4px 10px;border-radius:999px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:rgba(255,255,255,.12);border-radius:12px;overflow:hidden;margin-top:30px}
+.stat{background:var(--forest-2);padding:16px 16px 14px}
+.stat b{display:block;font-family:var(--display);font-size:28px;color:var(--rust-2)}
+.stat span{font-size:13px;color:var(--on-forest-2);line-height:1.35;display:block}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:8px;font-weight:800;font-size:15px;text-decoration:none;border:1.5px solid transparent;cursor:pointer;font-family:var(--body)}
+.btn-primary{background:var(--rust-2);color:#1C1209}
+.btn-ghost{border-color:rgba(255,255,255,.3);color:var(--on-forest);background:transparent}
+.btn-line{border-color:var(--line);color:var(--ink);background:transparent}
+.btn:hover{filter:brightness(1.07)}
+
+/* sections */
+section.band{padding-block:76px}
+section.band.alt{background:var(--paper-2)}
+.head{display:flex;flex-direction:column;gap:12px;margin-bottom:34px}
+
+/* watch */
+.films{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:24px;align-items:start}
+.player{border-radius:12px;overflow:hidden;background:#000;aspect-ratio:16/9;max-width:100%}
+.player video{width:100%;height:100%;display:block}
+.picker{display:flex;flex-direction:column;gap:10px}
+.pick{display:grid;grid-template-columns:120px minmax(0,1fr);gap:12px;align-items:center;text-align:left;padding:8px;border-radius:10px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer;font-family:var(--body)}
+.pick img{width:120px;aspect-ratio:16/9;object-fit:cover;border-radius:6px;display:block}
+.pick strong{display:block;font-size:15px}
+.pick small{display:block;color:var(--ink-2);font-size:13px;line-height:1.35}
+.pick[aria-pressed="true"]{border-color:var(--rust);box-shadow:inset 0 0 0 1px var(--rust)}
+.now{margin-top:14px;color:var(--ink-2);font-size:15px}
+
+/* 3D */
+.seg{display:inline-flex;border:1.5px solid var(--line);border-radius:999px;padding:3px;gap:3px;margin-bottom:16px}
+.seg button{border:0;background:transparent;color:var(--ink-2);font:700 14px var(--body);padding:8px 16px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.sim{border:1.5px solid var(--line);border-radius:14px;overflow:hidden;background:var(--forest);aspect-ratio:16/9;max-width:100%;position:relative}
+.sim iframe{width:100%;height:100%;border:0;display:block}
+.sim-foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:12px;color:var(--ink-2);font-size:15px}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
+.step img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;display:block;margin-bottom:12px}
+.step h3{font-family:var(--body);font-weight:800;font-size:17px;margin-bottom:4px}
+.step p{color:var(--ink-2);font-size:15px}
+
+/* tables */
+.tbl{overflow-x:auto;border:1.5px solid var(--line);border-radius:12px;background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-size:15.5px}
+th,td{padding:12px 16px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left;white-space:normal}
+thead th{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);font-weight:800;background:var(--paper-2)}
+tr.wraprow td{white-space:normal;min-width:150px}
+.buildtbl th{white-space:normal;vertical-align:bottom}
+.buildtbl td{white-space:normal}
+.buildtbl td:nth-child(4){background:color-mix(in srgb, var(--good) 13%, transparent);box-shadow:inset 2px 0 0 var(--good),inset -2px 0 0 var(--good)}
+.buildtbl th:first-child,.buildtbl td:first-child{width:22%}
+tr.key td{font-weight:800;background:color-mix(in srgb, var(--rust) 10%, transparent)}
+tbody tr:last-child td{border-bottom:0}
+.neg{color:var(--rust)}
+.note{color:var(--ink-2);font-size:14px;margin-top:12px;max-width:80ch}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px}
+.bars{display:flex;flex-direction:column;gap:12px}
+.bar{display:grid;grid-template-columns:minmax(0,210px) minmax(0,1fr) 80px;gap:12px;align-items:center;font-size:15px}
+.bar i{display:block;height:14px;border-radius:4px;background:var(--ink-2)}
+.bar i.big{background:var(--rust)}
+.bar b{text-align:right}
+.total{display:flex;justify-content:space-between;border-top:2px solid var(--ink);padding-top:10px;margin-top:6px;font-weight:800}
+
+/* options */
+.pill{display:inline-block;font-size:12px;font-weight:800;padding:2px 9px;border-radius:999px;border:1.5px solid currentColor}
+.pill.ok{color:var(--good)} .pill.cdl{color:var(--warn)}
+tr.plan td{background:color-mix(in srgb, var(--good) 13%, transparent);font-weight:700}
+.figure{border:1.5px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;max-width:100%}
+.figure img{display:block;width:100%;height:auto}
+.figs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;margin-top:28px}
+.figs figcaption{font-size:14px;color:var(--ink-2);margin-top:8px}
+
+/* licensing */
+.paths{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.path{border:1.5px solid var(--line);border-radius:12px;padding:22px;background:var(--paper);display:flex;flex-direction:column;gap:8px}
+.path .tag{align-self:flex-start;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:5px;background:var(--paper-2);color:var(--ink-2)}
+.path p{color:var(--ink-2);font-size:15px}
+
+/* pros cons */
+.pc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px}
+.pc ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.pc li{padding-left:22px;position:relative;font-size:16px}
+.pc li::before{content:"";position:absolute;left:0;top:.62em;width:10px;height:3px;border-radius:2px;background:var(--good)}
+.pc .cons li::before{background:var(--rust)}
+.pc li span{color:var(--ink-2)}
+
+/* docs */
+.docs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.doc{display:flex;flex-direction:column;gap:6px;padding:20px;border-radius:12px;border:1.5px solid var(--line);background:var(--paper);text-decoration:none;color:var(--ink);transition:border-color .15s}
+.doc:hover{border-color:var(--rust)}
+.doc .kind{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--rust)}
+.doc strong{font-size:17px}
+.doc span{color:var(--ink-2);font-size:14.5px}
+.doc .go{margin-top:auto;padding-top:8px;font-size:14px;font-weight:800}
+
+/* ask */
+.ask{background:var(--forest);color:var(--on-forest)}
+.ask .wrap{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:40px;align-items:center;padding-block:72px}
+.ask h2{font-size:clamp(32px,4.4vw,52px);margin:10px 0 16px}
+.ask .label{color:var(--rust-2)}
+.ask p{color:var(--on-forest-2)}
+.ask img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:14px;display:block}
+.contact{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:22px}
+.email{font-weight:800;font-size:18px;color:var(--on-forest);user-select:all}
+.copy{font:700 13px var(--body);border:1.5px solid rgba(255,255,255,.3);background:transparent;color:var(--on-forest);padding:6px 12px;border-radius:6px;cursor:pointer}
+footer{background:var(--forest);color:var(--on-forest-2);font-size:13px;border-top:1px solid rgba(255,255,255,.08)}
+footer .wrap{padding-block:22px;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+
+@media (max-width:900px){
+  .hero .wrap,.films,.two,.pc,.ask .wrap,.figs{grid-template-columns:minmax(0,1fr)}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .paths,.docs{grid-template-columns:minmax(0,1fr)}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero .wrap{padding-block:36px 44px;gap:28px}
+  .hero-film{order:-1}
+  section.band{padding-block:54px}
+}
+@media (max-width:560px){
+  .brand{font-size:16px}
+  .steps{grid-template-columns:minmax(0,1fr)}
+  .bar{grid-template-columns:minmax(0,1fr) 72px}
+  .bar i{grid-column:1 / -1;grid-row:2}
+  .pick{grid-template-columns:96px minmax(0,1fr)}
+  .pick img{width:96px}
+}
+</style>
+
+<nav class="nav" aria-label="Sections">
+  <div class="wrap">
+    <a class="brand" href="#top">The Bar Truck</a>
+    <ul>
+      <li><a class="tab" href="#watch">Watch</a></li>
+      <li><a class="tab" href="#explore">3D model</a></li>
+      <li><a class="tab" href="#capacity">Capacity</a></li>
+      <li><a class="tab" href="#engineering">Engineering</a></li>
+      <li><a class="tab" href="#numbers">Numbers</a></li>
+      <li><a class="tab" href="#build">Who builds it</a></li>
+      <li><a class="tab" href="#options">Options</a></li>
+      <li><a class="tab" href="#licensing">Licensing</a></li>
+      <li><a class="tab" href="#documents">Documents</a></li>
+      <li><a class="tab" href="#founder">Founder</a></li>
+      <li><a class="tab" href="#ask">The ask</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <p class="label">Investor room · Eugene, Oregon</p>
+      <h1>A bar and a venue that arrive in one truck</h1>
+      <p class="lede">A used 26 ft box truck that unfolds into about 670 sq ft of railed, partly covered deck: a 20 × 15 ft side deck under a three-tier sliding roof, plus a 15 ft rear deck under shade sails, with a curved bar inside the box. Built light enough to carry, strong enough for a 136-person crowd, and it drives on a regular license.</p>
+      <div class="stats">
+        <div class="stat"><b class="num">$303k</b><span>to buy, build, fit out and open</span></div>
+        <div class="stat"><b class="num">$6,000</b><span>per event day; add-ons extra</span></div>
+        <div class="stat"><b class="num">$81k</b><span>owner-operator cash a year at 22 days</span></div>
+        <div class="stat"><b class="num">3.7 yrs</b><span>payback, owner-operated</span></div>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#watch">Watch the films</a>
+        <a class="btn btn-ghost" href="pitch/">Open the pitch deck</a>
+      </div>
+    </div>
+    <div class="hero-film">
+      <video src="../media/open-for-business.mp4" poster="../img/poster-open.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Animated fly-around of the bar truck open for business at dusk"></video>
+      <span class="film-cap">Open for business · 36 s</span>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="band" id="watch" aria-labelledby="watch-h">
+  <div class="wrap">
+    <div class="head">
+      <p class="label">Watch</p>
+      <h2 id="watch-h">Films</h2>
+      <p class="lede">Open for business and Inside the bar: the finished bar at dusk, with guests on both decks and at the curved bar. Packed for the road: a see-through view of stowage. Setup films: the full sequence, side deck down, roof tiers out, rear deck built from the drop-down door and ten platforms, rails, sails and stairs, then teardown in reverse.</p>
+    </div>
+    <div class="films">
+      <div>
+        <div class="player"><video id="film" controls playsinline preload="metadata" poster="../img/poster-open.jpg" src="../media/open-for-business.mp4"></video></div>
+        <p class="now" id="now">Open for business: both decks at dusk, the lounge set and high-tops, and both stairs.</p>
+      </div>
+      <div class="picker" role="group" aria-label="Choose a film">
+        <button class="pick" type="button" id="pick-open" aria-pressed="true" data-src="../media/open-for-business.mp4" data-poster="../img/poster-open.jpg" data-note="Open for business: both decks at dusk, the lounge set and high-tops, and both stairs.">
+          <img src="../img/poster-open.jpg" alt=""><span><strong>Open for business</strong><small>Both decks at dusk · 36 s</small></span></button>
+        <button class="pick" type="button" id="pick-bar" aria-pressed="false" data-src="../media/inside-the-bar.mp4" data-poster="../img/poster-bar.jpg" data-note="Inside the bar: the curved counter, stools, back bar, ice bins and the bartender's side.">
+          <img src="../img/poster-bar.jpg" alt=""><span><strong>Inside the bar</strong><small>Curved bar and back bar · 33 s</small></span></button>
+        <button class="pick" type="button" id="pick-packed" aria-pressed="false" data-src="../media/packed-for-the-road.mp4" data-poster="../img/poster-packed.jpg" data-note="Packed for the road: a see-through view of where every part rides inside the 26 ft box.">
+          <img src="../img/poster-packed.jpg" alt=""><span><strong>Packed for the road</strong><small>See-through stowage · 35 s</small></span></button>
+        <button class="pick" type="button" id="pick-live" aria-pressed="false" data-src="../media/live-music.mp4" data-poster="../img/poster-live.jpg" data-note="Live music: a band on the rear deck under the shade sails, the audience on the lawn behind the truck, and the stair moved to the street side as a backstage stair.">
+          <img src="../img/poster-live.jpg" alt=""><span><strong>Live music</strong><small>Band on the rear deck · 26 s</small></span></button>
+        <button class="pick" type="button" id="pick-woodland" aria-pressed="false" data-src="../media/woodland.mp4" data-poster="../img/poster-woodland.jpg" data-note="Woodland setting: the full setup and teardown in a forest clearing.">
+          <img src="../img/poster-woodland.jpg" alt=""><span><strong>Setup, woodland</strong><small>Full sequence · 1 min 41 s</small></span></button>
+        <button class="pick" type="button" id="pick-studio" aria-pressed="false" data-src="../media/wraparound.mp4" data-poster="../img/poster-wraparound.jpg" data-note="Studio view: the same sequence on a plain grid, easiest to follow step by step.">
+          <img src="../img/poster-wraparound.jpg" alt=""><span><strong>Setup, studio</strong><small>Full sequence · 1 min 41 s</small></span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band alt" id="explore" aria-labelledby="explore-h">
+  <div class="wrap">
+    <div class="head">
+      <p class="label">Explore in 3D</p>
+      <h2 id="explore-h">Interactive 3D model</h2>
+      <p class="lede">Drag to look around, scroll to zoom, and press Open or Close to run the setup. The model shows the deck mechanism; the films show the finished build with its support legs and both stairs.</p>
+    </div>
+    <div class="seg" role="group" aria-label="Choose a model">
+      <button type="button" id="sim-wrap" aria-pressed="true" data-src="../sims/wraparound.html">Wraparound deck</button>
+    </div>
+    <div class="sim"><iframe id="simframe" src="../sims/wraparound.html" title="Interactive 3D model of the bar truck" loading="lazy"></iframe></div>
+    <div class="sim-foot">
+      <span>Works best on a laptop or desktop.</span>
+      <a id="simfull" href="../sims/wraparound.html" target="_blank" rel="noopener"><b>Open the model full screen</b></a>
+    </div>
+    <div class="steps" style="margin-top:44px">
+      <div class="step"><img src="../img/closed.jpg" alt="The truck closed for travel"><h3>On the road</h3><p>One 26 ft box truck, 26,000 lb GVWR or less. Everything rides inside.</p></div>
+      <div class="step"><img src="../img/deckdown.jpg" alt="Side deck lowered onto its legs"><h3>Side deck down</h3><p>A winch lowers the 20 × 15 ft bi-fold aluminum deck onto rolling jacks.</p></div>
+      <div class="step"><img src="../img/roof.jpg" alt="Roof tiers sliding out"><h3>Roof slides out</h3><p>Three Suntuf tiers roll out from under the ceiling and drop their own legs.</p></div>
+      <div class="step"><img src="../img/platforms.jpg" alt="Rear deck platforms being set"><h3>Rear deck built</h3><p>The rear door drops level and ten 4 × 8 platforms on six legs each complete a 15 ft L.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="capacity" aria-labelledby="capacity-h">
+  <div class="wrap">
+    <div class="head">
+      <p class="label">Built for a crowd</p>
+      <h2 id="capacity-h">Checked to a 100 psf crowd load</h2>
+      <p class="lede">The deck is designed for the building-code load on assembly platforms, 100 lb per square foot, with railings that hold a 200 lb push at the top. The design uses tight joist spacing, six legs under each platform, support legs at the truck's hinge line and rear sill, mid-length legs under the rear door, and ground pads under every leg. A structural engineer stamps the final drawings.</p>
+    </div>
+    <div class="paths">
+      <div class="path"><span class="tag">One stair</span><h3>49 people</h3><p>The code limit for an assembly space with a single exit.</p></div>
+      <div class="path"><span class="tag">Two stairs, standing</span><h3>136 people</h3><p>A second 44 in stair sits at the front of the side deck. 5 sq ft per person, staff included.</p></div>
+      <div class="path"><span class="tag">Wedding layout</span><h3>94 people</h3><p>Standing on the side deck, tables and chairs on the rear deck. About 45 with tables everywhere.</p></div>
+    </div>
+    <p class="note">The truck carries the venue: deck, roof, rails, stairs, platforms, the bar, the lithium power system, sink, cooler and water. A used 3/4-ton support pickup with a capped 8 ft bed carries the chairs, tables, ground pads, ice and drinks, and the second crew member. Carbon fiber roof beams, rafters and legs, carbon fiber sail and rail posts, honeycomb stair treads and lighter finishes keep the truck about 1,700 lb under a typical 10,000 lb payload (about 1,000 lb with the Western inset floors). Neither vehicle needs a CDL. Details are in the materials list.</p>
+  </div>
+</section>
+
+<section class="band alt" id="engineering" aria-labelledby="engineering-h">
+  <div class="wrap">
+    <div class="head">
+      <p class="label">Engineering progress</p>
+      <h2 id="engineering-h">Hinge, stairs and platform legs</h2>
+      <p class="lede">Shop-ready: the deck hinge, the folding stairs for the second exit, and fold-flat platform legs that level on uneven ground.</p>
+    </div>
+    <div class="films" style="margin-bottom:28px">
+      <div class="player"><video controls playsinline preload="none" poster="../img/poster-stair.jpg" src="../media/stair-closeup.mp4"></video></div>
+      <p class="note" style="margin-top:0">Stair close-up, 18 s: the guard panels lift off, the treads fold flat into the stringers, and it sets up again in reverse.</p>
+    </div>
+    <div class="paths">
+      <div class="path"><span class="tag">Deck hinge</span><h3>Folds flat</h3><p>The hinge pin sits 1-1/4 in below the leaf undersides on 2 in knuckles, so the leaves fold flat. Leg stands carry the crowd load, not the pins. Rated 100 psf, with a 12 in stowage pocket.</p></div>
+      <div class="path"><span class="tag">Folding stairs</span><h3>Shop drawings and cut list</h3><p>Two 44 in stairs, 7 risers of 6-7/8 in, 1/4 in aluminum plate stringers. Each one hooks onto the deck and stands on two leveling feet, folds to about 10 in thick and weighs about 180 lb.</p></div>
+      <div class="path"><span class="tag">Build files</span><h3>CAD</h3><p>Real-size CAD for the hinge and stair in FreeCAD (STEP export) and OpenSCAD (flat DXF for a cutting shop).</p></div>
+    </div>
+    <p class="note">Platform legs: each of the 60 legs folds flat under its platform, telescopes in 1/2 in steps and finishes on a 5,000 lb swivel leveling foot for uneven ground. Folding knee braces and clip-on cross braces stop the deck from swaying under a crowd, and custom stainless over-center latches tie the platforms to each other and the door every 24 in, with tapered dowels that keep the seams flush. The outer side-deck leaf is honeycomb panel and the lounge set is aluminum outdoor furniture. Startup, with the welding shop and family build, is $302,524 for the Light build, $293,723 for the Western build with cedar floors, or $296,647 for Western inset.</p>
+  </div>
+</section>
+
+<section class="band" id="numbers" aria-labelledby="numbers-h">
+  <div class="wrap">
+    <div class="head">
+      <p class="label">The numbers</p>
+      <h2 id="numbers-h">Annual scenarios</h2>
+      <p class="lede">Three one-year scenarios for Oregon: 15 event days a year on the low end, 30 on the high end, and 22 in between, at a $6,000 base rate per event day with the host supplying the alcohol. Alcohol supplied by the bar, extra hours and other add-ons are billed separately and not counted. Break-even after owner pay is about 11 to 18 event days a year. Demand at $6,000 a day is unproven; it is about twice what trailer bars charge, so the day-rate options below run the same model at $5,000, $4,000 and $3,000.</p>
+    </div>
+    <div class="two">
+      <div class="tbl">
+        <table class="num">
+          <thead><tr><th>Per year</th><th>Conservative</th><th>Base</th><th>Upside</th></tr></thead>
+          <tbody>
+            <tr><td>Event days × day rate</td><td>15 × $6,000</td><td>22 × $6,000</td><td>30 × $6,000</td></tr>
+            <tr><td>Revenue</td><td>$90,000</td><td>$132,000</td><td>$180,000</td></tr>
+            <tr><td>Owner / manager pay</td><td>$30,000</td><td>$45,000</td><td>$60,000</td></tr>
+            <tr><td>Profit after owner pay</td><td>$19,775</td><td>$36,110</td><td>$54,250</td></tr>
+            <tr class="key"><td>Owner-operator cash</td><td>$49,775</td><td>$81,110</td><td>$114,250</td></tr>
+            <tr><td>Payback on startup</td><td>6.1 yrs</td><td>3.7 yrs</td><td>2.6 yrs</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <h3 style="margin-bottom:16px">Startup cost: $302,524</h3>
+        <div class="bars num">
+          <div class="bar"><span>Deck, roof, rear deck, rails, sails, stairs</span><i class="big" style="width:100%"></i><b>$96,619</b></div>
+          <div class="bar"><span>Build labor: welding shop, family build</span><i style="width:80%"></i><b>$76,818</b></div>
+          <div class="bar"><span>Used 26 ft box truck</span><i style="width:47%"></i><b>$45,000</b></div>
+          <div class="bar"><span>Curved bar, lithium power, sinks, interior, wrap</span><i class="big" style="width:32%"></i><b>$30,940</b></div>
+          <div class="bar"><span>Support pickup, chairs, tables, ice chests</span><i style="width:25%"></i><b>$24,397</b></div>
+          <div class="bar"><span>Working capital</span><i style="width:10%"></i><b>$10,000</b></div>
+          <div class="bar"><span>Bar equipment, glassware, POS</span><i style="width:8%"></i><b>$8,000</b></div>
+          <div class="bar"><span>Structural engineer: review, stamped drawings</span><i style="width:6%"></i><b>$5,750</b></div>
+          <div class="bar"><span>Licensing, legal, insurance, branding</span><i style="width:5%"></i><b>$5,000</b></div>
+        </div>
+        <div class="total num"><span>Total</span><span>$302,524</span></div>
+        <p class="note">Materials carry a 15% contingency. Build labor is the plan: a certified welding shop does the welding and family and owners do the rest, with paid shop time, tools, shop space, a licensed electrician and a weld inspection. The largest costs are the honeycomb deck panels, the build labor and the lithium power system. The other ways to build it are under <a href="#build"><b>Who builds it</b></a>.</p>
+      </div>
+    </div>
+    <h3 style="margin:44px 0 6px">Day-rate options</h3>
+    <p class="note" style="margin:0 0 16px">If the market won't pay $6,000: the same costs and event days at lower day rates. Owner-operator cash a year (profit + owner pay) on the $302,524 startup.</p>
+    <div class="tbl">
+      <table class="num">
+        <thead><tr><th>Day rate</th><th>15 days</th><th>22 days</th><th>30 days</th><th>Payback, 22 days</th><th>Break-even days</th></tr></thead>
+        <tbody><tr class="key"><td>$6,000 (plan)</td><td>$49,775</td><td>$81,110</td><td>$114,250</td><td>3.7 yrs</td><td>11–18</td></tr><tr><td>$5,000</td><td>$36,875</td><td>$61,970</td><td>$87,850</td><td>4.9 yrs</td><td>14–23</td></tr><tr><td>$4,000</td><td>$23,975</td><td>$42,830</td><td>$61,450</td><td>7.1 yrs</td><td>18–30</td></tr><tr><td>$3,000</td><td>$11,075</td><td>$23,690</td><td>$35,050</td><td>12.8 yrs</td><td>26–44</td></tr></tbody>
+      </table>
+    </div>
+    <p class="note">At $5,000 it still pays back in about five years at 22 days; at $4,000 in about seven, needing 23 event days just to cover owner pay. At $3,000 profit after owner pay is negative at every volume modeled. Break-even = event days a year for profit after owner pay to reach zero (conservative to upside cost levels).</p>
+    <h3 style="margin:44px 0 6px" id="build-options">Three build options</h3>
+    <p class="note" style="margin:0 0 16px">Same truck, deck, roof and bookings. Option B swaps the floor panels where guests walk for cedar planks, for an old-west saloon look. The railings stay raw aluminum in all three. Option C is the same cedar, set flush inside aluminum edge frames. Any option can add a solar roof: flexible panels in place of the Suntuf, with a charge controller that charges the lithium pack (about $10,500 and 350 lb more).</p>
+    <div class="tbl">
+      <table class="num">
+        <thead><tr><th></th><th>A: Light build</th><th>B: Western</th><th>C: Western inset</th></tr></thead>
+        <tbody>
+          <tr><td>Floors guests walk on</td><td>Aluminum honeycomb panels</td><td>5/4 cedar planks (inner leaf, rear door, platforms)</td><td>The same cedar, flush inside 2.5 in aluminum edge frames</td></tr>
+          <tr><td>Outer side-deck leaf</td><td>Honeycomb panel</td><td>As A</td><td>As A</td></tr>
+          <tr><td>Railings</td><td>Raw aluminum</td><td>Raw aluminum</td><td>Raw aluminum</td></tr>
+          <tr><td>Extra weight</td><td>None</td><td>About 570 lb</td><td>About 770 lb</td></tr>
+          <tr><td>Payload left on a 10,000 lb truck (support pickup)</td><td>About 1,700 lb</td><td>About 1,200 lb</td><td>About 1,000 lb</td></tr>
+          <tr class="key"><td>Startup</td><td>$302,524</td><td>$293,723</td><td>$296,647</td></tr>
+          <tr><td>Payback, $6,000 and 22 days</td><td>3.7 yrs</td><td>3.6 yrs</td><td>3.7 yrs</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Cedar costs far less than honeycomb panels, so Option B is about $8,800 cheaper than A and Option C about $5,900 cheaper; both are heavier and need a seasonal oil touch-up. C's edge frames add about 315 ft of aluminum tube, $2,900 and 200 lb over B, for a crisper, framed look that protects the board ends. Details on the Build options tabs of the financials and the materials list.</p>
+    <p class="note">Illustrative model, not a forecast. Every assumption is editable in the Investor Financials spreadsheet, including the Day-rate options tab.</p>
+  </div>
+</section>
+
+
+<section class="band" id="build" aria-labelledby="build-h" style="border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="head">
+      <p class="label">Who builds it</p>
+      <h2 id="build-h">The plan: pay for the welding, build the rest ourselves</h2>
+      <p class="lede">The $302,524 startup is path 3: a certified welding shop does the aluminum welding and family and owners build the rest. Everything but the build labor is $225,706. The build is about 1,470 shop hours (est.), and about 580 of them are welding. Here is what the labor adds four ways, at Eugene-Springfield and Oregon rates: a family crew at $30 an hour if paid, a welding shop at $110 an hour, a pro builder at $125 an hour plus a 10% materials markup, and a licensed electrician at $115 an hour.</p>
+    </div>
+    <div class="tbl">
+      <table class="num buildtbl">
+        <thead><tr><th></th><th>1. Family build, volunteer</th><th>2. Family build, paid</th><th>3. The plan: pay for the welding; family and owners do the rest</th><th>4. Pro shop, turnkey</th></tr></thead>
+        <tbody>
+          <tr class="wraprow"><td>Who does the work</td><td>Friends and family, about 1,980 hours</td><td>The same crew at $30 an hour</td><td>Certified welders 578 hours; family about 1,200 hours</td><td>A builder, about 1,610 hours</td></tr>
+          <tr><td>Labor, tools, shop space, inspections</td><td>$23,598</td><td>$90,096</td><td>$76,818</td><td>$214,906</td></tr>
+          <tr class="key"><td>Total startup</td><td>$249,304</td><td>$315,802</td><td>$302,524</td><td>$440,612</td></tr>
+          <tr><td>If the hours run 25% over</td><td>$252,304</td><td>$335,426</td><td>$320,478</td><td>$491,006</td></tr>
+          <tr><td>Payback, owner-operated (22 days at $6,000)</td><td>3.1 yrs</td><td>3.9 yrs</td><td>3.7 yrs</td><td>5.4 yrs</td></tr>
+          <tr class="wraprow"><td>Time to build (est.)</td><td>About 25 weeks</td><td>About 25 weeks</td><td>About 17 weeks</td><td>About 17 weeks, plus the shop's wait list</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="paths" style="margin-top:28px">
+      <div class="path"><span class="tag">Family build</span><h3>Cheapest in cash</h3><p>Volunteers save about $59,000 of labor at local wages. The cash goes to shop space, tools, consumables, a licensed electrician for the 120/240 V side and a certified welding inspector. Slowest, and the crew carries the schedule and weld quality.</p></div>
+      <div class="path"><span class="tag">Paid welding · the plan</span><h3>Certified welds, family finish</h3><p>A welding shop cuts, fits and welds the frames, legs, stairs, rail sockets and box structure, the parts a crowd stands on. The family does the carbon roof, panels, rails, power, plumbing, interior and bar. Paying the family for their hours too would add about $40,300.</p></div>
+      <div class="path"><span class="tag">Pro shop</span><h3>Least work for us</h3><p>Fixed price and a warranty if the contract says so, but the highest startup and the longest payback. Custom truck builds typically take 12 to 20 weeks from contract to keys.</p></div>
+    </div>
+    <p class="note">The deck is checked to a 100 psf crowd load, so structural aluminum welds should be done or inspected to AWS D1.2; the engineer who stamps the drawings will want welder certifications or an inspection report. Hours are estimates for a one-off build of this design; get two or three shop quotes before deciding. The pitch deck, summary and the ask all use path 3. Rates, hours and sources are on the Build labor tab of the Investor Financials spreadsheet.</p>
+  </div>
+</section>
+
+<section class="band alt" id="options" aria-labelledby="options-h">
+  <div class="wrap">
+    <div class="head">
+      <p class="label">Vehicle options</p>
+      <h2 id="options-h">Used box truck is the plan</h2>
+      <p class="lede">Used 26 ft box trucks are plentiful: one listing site showed 25 for sale at $26k to $75k, median about $40k. New ones list for about $120k to $140k.</p>
+    </div>
+    <div class="tbl">
+      <table class="num">
+        <thead><tr><th>Base vehicle (with the wraparound deck)</th><th>Vehicle</th><th>Startup</th><th>Payback</th><th>License</th></tr></thead>
+        <tbody>
+          <tr><td>Used box truck, high miles (~250k mi)</td><td>$35k</td><td>$293k</td><td>3.7 yrs</td><td><span class="pill ok">No CDL</span></td></tr>
+          <tr class="plan"><td>Used box truck, lower miles · the plan</td><td>$45k</td><td>$303k</td><td>3.7 yrs</td><td><span class="pill ok">No CDL</span></td></tr>
+          <tr><td>New box truck, full warranty</td><td>$127k</td><td>$385k</td><td>4.6 yrs</td><td><span class="pill ok">No CDL</span></td></tr>
+          <tr><td>Pickup + fifth-wheel trailer, both used</td><td>$84k</td><td>$341k</td><td>4.3 yrs</td><td><span class="pill cdl">Likely Class A</span></td></tr>
+          <tr><td>Pickup + fifth-wheel trailer, both new</td><td>$120k</td><td>$378k</td><td>4.6 yrs</td><td><span class="pill cdl">Likely Class A</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Vehicle prices include estimated reconditioning, hitch and CDL training where they apply. A pickup and trailer can leave the bar at a multi-day venue and doubles as a work truck, but makes a 55 to 60 ft rig that likely needs a Class A CDL. Vehicle selection is driven by payload; empty weight is verified before purchase. In every case a used 3/4-ton support pickup with a capped 8 ft bed carries the chairs, tables, ice and drinks.</p>
+  </div>
+</section>
+
+<section class="band" id="licensing" aria-labelledby="licensing-h">
+  <div class="wrap">
+    <div class="head">
+      <p class="label">Licensing and permits</p>
+      <h2 id="licensing-h">Private events, public sales, game days</h2>
+      <p class="lede">Licensing depends on whether guests pay for drinks. Oregon first; other states through a local licensed partner.</p>
+    </div>
+    <div class="paths">
+      <div class="path"><span class="tag">Private events</span><h3>No OLCC license</h3><p>Weddings, corporate parties and private tailgates where the host buys the alcohol and guests drink free. The $6,000 day rate covers the truck, deck, bar and staff; servers are still trained. Alcohol supplied by the bar is an add-on.</p></div>
+      <div class="path"><span class="tag">Public sales</span><h3>OLCC caterer or event license</h3><p>Festivals, cash bars and ticketed watch parties. Requires $300k liquor liability, food at every event and OLCC server permits. About 30 to 90 days to license.</p></div>
+      <div class="path"><span class="tag">Ducks game days</span><h3>Private land, not the lots</h3><p>Autzen lots ban alcohol sales and oversized rigs. Game-day work is private hosted tailgates or licensed watch parties on private property nearby.</p></div>
+    </div>
+    <p class="note">Investor money is raised privately under SEC Rule 506(b) with an attorney. Planning guide, not legal advice; details and sources are in the Legal and Permits Guide.</p>
+  </div>
+</section>
+
+<section class="band alt" id="pros" aria-labelledby="pros-h">
+  <div class="wrap">
+    <div class="head">
+      <p class="label">Pros and cons</p>
+      <h2 id="pros-h">Pros, cons and risks</h2>
+    </div>
+    <div class="pc">
+      <div>
+        <h3 style="margin-bottom:16px">Pros</h3>
+        <ul>
+          <li><b>A venue, not a counter.</b> <span>670 sq ft of railed, partly covered deck in one booking.</span></li>
+          <li><b>No CDL.</b> <span>The largest truck a regular license allows, so drivers are easy to staff.</span></li>
+          <li><b>Built for Oregon weather.</b> <span>The sliding roof keeps rain off the side deck.</span></li>
+          <li><b>Certified welds, family build.</b> <span>A welding shop welds the structure a crowd stands on; family and owners do the rest, keeping build labor to about $77,000.</span></li>
+          <li><b>Built for a crowd.</b> <span>Checked to a 100 psf crowd load; up to 136 people standing with two stairs.</span></li>
+          <li><b>Silent power.</b> <span>A 15 kWh lithium pack under the frame runs two events per charge, no generator noise at weddings.</span></li>
+          <li><b>Two vehicles, no CDL.</b> <span>The truck carries the venue; a used support pickup carries chairs, tables, ice and drinks, and runs errands.</span></li>
+          <li><b>Many revenue streams.</b> <span>Weddings, corporate, festivals, golf tournaments, ski areas, wineries and deck-only rentals.</span></li>
+        </ul>
+      </div>
+      <div class="cons">
+        <h3 style="margin-bottom:16px">Cons and risks</h3>
+        <ul>
+          <li><b>Not built yet.</b> <span>Requires engineer sign-off and a first build. About 17 weeks with the welding shop and the family crew working in parallel; a turnkey pro shop would cost about $138,000 more.</span></li>
+          <li><b>Seasonality.</b> <span>Peak May to October; ski areas and holiday corporate events fill some of winter (the roof slides in under snow).</span></li>
+          <li><b>Licensing work.</b> <span>Public sales need food at every event and $300k liquor coverage.</span></li>
+          <li><b>Weight.</b> <span>With the support pickup the truck runs about 1,700 lb under a typical 10,000 lb payload, and that depends on the carbon fiber and other lighter parts. The truck must be chosen for payload and weighed before purchase.</span></li>
+          <li><b>Setup and wind.</b> <span>A small crew and a few hours; roof and sails retract above 20 mph.</span></li>
+          <li><b>Price untested.</b> <span>$6,000 a day is about twice what trailer bars charge. The product is the venue, not the drinks; demand is unproven. At $4,000 it still pays back in a little under six years at 22 days; at $3,000 it does not cover owner pay.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="documents" aria-labelledby="documents-h">
+  <div class="wrap">
+    <div class="head">
+      <p class="label">Documents</p>
+      <h2 id="documents-h">Files</h2>
+      <p class="lede">Every file opens in Google Drive, where it can be viewed or downloaded. The pitch deck, summary, financials and this page all use the same figures.</p>
+    </div>
+    <div class="docs">
+      <a class="doc" href="pitch/"><span class="kind">19 slides · PDF download</span><strong>Investor pitch deck</strong><span>Concept, the three build options, the founder, crowd capacity, market, pricing, scenarios, day-rate options, startup cost, vehicle options, risks, licensing, plan and the ask.</span><span class="go">Open deck</span></a>
+      <a class="doc" href="https://drive.google.com/file/d/1zqBCVKDcubfHn7FDb7Hctyv5Ty40gU_v/view" target="_blank" rel="noopener"><span class="kind">Excel · Google Drive</span><strong>Investor financials</strong><span>Scenarios at $6,000 a day, day-rate options at $5,000, $4,000 and $3,000, startup with the plan's build labor (paid welding, family build), the other three ways to build it, break-even and truck options.</span><span class="go">Open spreadsheet</span></a>
+      <a class="doc" href="https://drive.google.com/file/d/1TgLgiGzKsKdE6ex-PxIlt4u857WUelLp/view" target="_blank" rel="noopener"><span class="kind">PDF · 6 pages</span><strong>Legal and permits guide</strong><span>Private vs. public sales, Ducks game days, Oregon and nearby states, insurance and fundraising.</span><span class="go">Open guide</span></a>
+      <a class="doc" href="https://drive.google.com/file/d/1yzYzDZHx0zds-lK42sv3pkJdMwmRreqC/view" target="_blank" rel="noopener"><span class="kind">Excel · Google Drive</span><strong>Materials list</strong><span>All three build options side by side, the support pickup, the solar roof option, weight budget, deck load check, people capacity, costs, lithium power, every material and the one-truck carbon fiber parts.</span><span class="go">Open list</span></a>
+      <a class="doc" href="https://drive.google.com/file/d/1Jhgkd97Pq2lRxAE-6JVp8xmAXD-qLgzK/view" target="_blank" rel="noopener"><span class="kind">PDF · 1 page</span><strong>One-page summary</strong><span>Key numbers and a guide to every file in the folder.</span><span class="go">Open summary</span></a>
+      <a class="doc" href="https://drive.google.com/file/d/10yaxLJ8LZknp-XTGWWB5VjFu7Ub7i2Rs/view" target="_blank" rel="noopener"><span class="kind">PDF · 1 page</span><strong>Founder bio</strong><span>Max Edson: from Charley's Saloon on Maui to B2 Bar and Grill in Eugene.</span><span class="go">Open bio</span></a>
+      <a class="doc" href="https://drive.google.com/file/d/15kO_vLVyYMSfkbwfxQDJFolqFsa8PLz_/view" target="_blank" rel="noopener"><span class="kind">Video · 64 s</span><strong>Three build options</strong><span>The finished truck with guests: Light build, Western and Western inset, side by side.</span><span class="go">Watch</span></a>
+      <a class="doc" href="https://drive.google.com/drive/folders/1SUJuSGA5rZbFv2cWY1qcoIR6hOolY3O5" target="_blank" rel="noopener"><span class="kind">Google Drive folder</span><strong>The full package</strong><span>All the files, including the films and the 3D model to download.</span><span class="go">Open folder</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="band alt" id="founder" aria-labelledby="founder-h">
+  <div class="wrap">
+    <div class="head">
+      <p class="label">The founder</p>
+      <h2 id="founder-h">Max Edson</h2>
+      <p class="lede">Eugene native and working bartender, from a legendary Maui saloon to Eugene's B2 Bar and Grill.</p>
+    </div>
+    <div class="two">
+      <div>
+        <p>Max was born and raised in Eugene, Oregon, and graduated from South Eugene High School. Soon after graduation he moved to Maui, where he tended bar at Charley's Restaurant &amp; Saloon in Paia, the island saloon long known for Willie Nelson and the musicians who played there.</p>
+        <p>He then worked in the state-licensed cannabis industry, first in Northern California and then back in Eugene. Returning to hospitality, he joined Hot Mama's Wings, where he learned more about running a restaurant, and today he tends bar at B2 Bar and Grill, serving a loyal crowd of longtime Eugene regulars.</p>
+        <p>The Bar Truck is Max's idea: the warmth of a classic saloon, brought to weddings and events across Oregon. Max lives in Eugene with his son, Lucas.</p>
+      </div>
+      <div>
+      <img src="img/max.jpg" alt="Max Edson" style="width:100%;max-width:420px;aspect-ratio:4/4.6;object-fit:cover;object-position:50% 45%;border-radius:14px;display:block;margin-bottom:18px">
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Experience</th><th>Where</th></tr></thead>
+          <tbody>
+            <tr><td>Bartender, B2 Bar and Grill (current)</td><td>Eugene</td></tr>
+            <tr><td>Restaurant, Hot Mama's Wings</td><td>Eugene</td></tr>
+            <tr><td>State-licensed cannabis industry</td><td>Northern California, Eugene</td></tr>
+            <tr><td>Bartender, Charley's Restaurant &amp; Saloon</td><td>Paia, Maui</td></tr>
+            <tr><td>South Eugene High School, graduate</td><td>Eugene</td></tr>
+          </tbody>
+        </table>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ask" id="ask" aria-labelledby="ask-h">
+  <div class="wrap">
+    <div>
+      <p class="label">The ask</p>
+      <h2 id="ask-h">$305,000 to build and launch for the 2027 season</h2>
+      <p>Truck, the deck build (a certified welding shop for the welding, family and owners for the rest), a used support pickup, curved bar and lithium power, equipment, licensing and a first-season cushion. Open to equity, a loan repaid from bookings, or a revenue share. Build runs January to April 2027, with first bookings in May.</p>
+      <div class="contact">
+        <span>Max Edson ·</span>
+        <span class="email" id="email">maxedson123@gmail.com</span>
+        <span>· 541-852-6904</span>
+        <button class="copy" type="button" id="copybtn">Copy email</button>
+      </div>
+    </div>
+    <img src="../img/stair.jpg" alt="The stair and railed deck at the rear corner of the truck">
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>The Bar Truck · Eugene, Oregon · November 2026</span>
+    <span>Figures are an illustrative model, not a forecast. Licensing notes are a planning guide, not legal advice.</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var film=document.getElementById('film'), now=document.getElementById('now');
+  var picks=[].slice.call(document.querySelectorAll('.pick'));
+  picks.forEach(function(b){b.addEventListener('click',function(){
+    picks.forEach(function(x){x.setAttribute('aria-pressed', x===b?'true':'false')});
+    film.poster=b.dataset.poster; film.src=b.dataset.src; now.textContent=b.dataset.note;
+    var p=film.play(); if(p&&p.catch)p.catch(function(){});
+  })});
+  var frame=document.getElementById('simframe'), full=document.getElementById('simfull');
+  var segs=[].slice.call(document.querySelectorAll('.seg button'));
+  segs.forEach(function(b){b.addEventListener('click',function(){
+    segs.forEach(function(x){x.setAttribute('aria-pressed', x===b?'true':'false')});
+    frame.src=b.dataset.src; full.href=b.dataset.src;
+  })});
+  var hero=document.querySelector('.hero-film video');
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches && hero){hero.removeAttribute('autoplay');try{hero.pause()}catch(e){}}
+  var btn=document.getElementById('copybtn'), em=document.getElementById('email');
+  btn.addEventListener('click',function(){
+    var t=em.textContent.trim();
+    function sel(){var r=document.createRange();r.selectNodeContents(em);var s=window.getSelection();s.removeAllRanges();s.addRange(r);btn.textContent='Selected, press Ctrl+C';}
+    try{navigator.clipboard.writeText(t).then(function(){btn.textContent='Copied';},sel);}catch(e){sel();}
+  });
+})();
+</script>
+
+</body></html>

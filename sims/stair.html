@@ -46,7 +46,7 @@ const C=new THREE.PerspectiveCamera(36,1,0.05,200); const O=new THREE.OrbitContr
 S.add(new THREE.HemisphereLight(0xffffff,0x8a8f8c,.7)); const sun=new THREE.DirectionalLight(0xffffff,.8); sun.position.set(-6,12,10); sun.castShadow=true;
 sun.shadow.mapSize.set(2048,2048); Object.assign(sun.shadow.camera,{left:-10,right:10,top:10,bottom:-10}); S.add(sun);
 const M=(c,o={})=>new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:.6},o));
-const alu=M(0xb9c0c6,{metalness:.55,roughness:.38}), tread=M(0xd3d9de,{metalness:.7,roughness:.3}), steel=M(0x3b4146,{metalness:.4}),
+const alu=M(0xb9c0c6,{metalness:.55,roughness:.38}), tread=M(0xaab1b6,{metalness:.3,roughness:.75}), steel=M(0x3b4146,{metalness:.4}),
       orange=M(0xe2611a), cedar=M(0xb0683a,{roughness:.55}), deckM=M(0xb98a55), pinM=M(0x2a6fdb,{metalness:.3}), ground=M(0xc9cfcc,{roughness:1});
 function bx(w,h,d,m,x,y,z,p){const o=new THREE.Mesh(new THREE.BoxGeometry(w*IN,h*IN,d*IN),m);o.position.set(x*IN,y*IN,z*IN);o.castShadow=o.receiveShadow=true;(p||S).add(o);return o;}
 function cy(r,len,m,x,y,z,p){const o=new THREE.Mesh(new THREE.CylinderGeometry(r*IN,r*IN,len*IN,20),m);o.rotation.x=Math.PI/2;o.position.set(x*IN,y*IN,z*IN);o.castShadow=true;(p||S).add(o);return o;}
@@ -78,7 +78,7 @@ const treads=[];
 for(let i=1;i<=G.NT;i++){
   const px=G.RUN*i-G.PIV_BACK, py=G.DECK-G.RISE*i-G.PIV_DOWN;
   const g=new THREE.Group(); g.position.set(px*IN,py*IN,0); S.add(g); treads.push(g);
-  bx(12,0.1875,G.CLEAR-0.6,tread,-5,1.41,0,g);                     // 3/16 diamond plate, 12 in deep
+  bx(12,0.1875,G.CLEAR-0.6,tread,-5,1.41,0,g);                     // honeycomb tread with a grit top, 12 in deep
   bx(0.19,1.0,G.CLEAR-0.6,tread,0.9,0.9,0,g);                        // 1 in bent nosing
   bx(2,1,G.CLEAR-1.2,alu,-0.8,0.8,0,g); bx(2,1,G.CLEAR-1.2,alu,-9.6,0.8,0,g);   // two 2x1x1/8 tubes
   bx(0.19,2.5,G.CLEAR-0.6,tread,-10.9,0.1,0,g);                      // rear kick plate: closes the open riser below 4 in

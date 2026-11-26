@@ -132,6 +132,7 @@ tr.plan td{background:color-mix(in srgb, var(--good) 13%, transparent);font-weig
 
 /* licensing */
 .paths{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.paths.four{grid-template-columns:repeat(4,minmax(0,1fr))}
 .path{border:1.5px solid var(--line);border-radius:12px;padding:22px;background:var(--paper);display:flex;flex-direction:column;gap:8px}
 .path .tag{align-self:flex-start;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:5px;background:var(--paper-2);color:var(--ink-2)}
 .path p{color:var(--ink-2);font-size:15px}
@@ -169,7 +170,7 @@ footer .wrap{padding-block:22px;display:flex;flex-wrap:wrap;gap:8px 24px;justify
 @media (max-width:900px){
   .hero .wrap,.films,.two,.pc,.ask .wrap,.figs{grid-template-columns:minmax(0,1fr)}
   .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .paths,.docs{grid-template-columns:minmax(0,1fr)}
+  .paths,.paths.four,.docs{grid-template-columns:minmax(0,1fr)}
   .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
   .hero .wrap{padding-block:36px 44px;gap:28px}
   .hero-film{order:-1}
@@ -290,10 +291,11 @@ footer .wrap{padding-block:22px;display:flex;flex-wrap:wrap;gap:8px 24px;justify
       <h2 id="capacity-h">Checked to a 100 psf crowd load</h2>
       <p class="lede">The deck is designed for the building-code load on assembly platforms, 100 lb per square foot, with railings that hold a 200 lb push at the top. The design uses tight joist spacing, six legs under each platform, support legs at the truck's hinge line and rear sill, mid-length legs under the rear door, and ground pads under every leg. A structural engineer stamps the final drawings.</p>
     </div>
-    <div class="paths">
+    <div class="paths four">
       <div class="path"><span class="tag">One stair</span><h3>49 people</h3><p>The code limit for an assembly space with a single exit.</p></div>
       <div class="path"><span class="tag">Two stairs, standing</span><h3>136 people</h3><p>A second 44 in stair sits at the front of the side deck. 5 sq ft per person, staff included.</p></div>
       <div class="path"><span class="tag">Wedding layout</span><h3>94 people</h3><p>Standing on the side deck, tables and chairs on the rear deck. About 45 with tables everywhere.</p></div>
+      <div class="path"><span class="tag">Theatre layout</span><h3>A stage with a backstage</h3><p>The rear deck is the stage and the box is backstage. Stage curtains across the rear doorway hide it from the crowd, so actors wait, change and make their entrances unseen. The audience sits on the lawn.</p></div>
     </div>
     <p class="note">The truck carries the venue: deck, roof, rails, stairs, platforms, the bar, the lithium power system, sink, cooler and water. A used 3/4-ton support pickup with a capped 8 ft bed carries the chairs, tables, ground pads, ice and drinks, and the second crew member. Carbon fiber roof beams, rafters and legs, carbon fiber sail and rail posts, honeycomb stair treads keep the truck about 1,350 lb under a typical 10,000 lb payload with the saloon interior of wood-look plank floors and barnwood veneer walls (about 600 lb with the Western inset floors). Neither vehicle needs a CDL. Details are in the materials list.</p>
   </div>
@@ -473,7 +475,7 @@ footer .wrap{padding-block:22px;display:flex;flex-wrap:wrap;gap:8px 24px;justify
           <li><b>Built for a crowd.</b> <span>Checked to a 100 psf crowd load; up to 136 people standing with two stairs.</span></li>
           <li><b>Silent power.</b> <span>A 15 kWh lithium pack under the frame runs two events per charge, no generator noise at weddings.</span></li>
           <li><b>Two vehicles, no CDL.</b> <span>The truck carries the venue; a used support pickup carries chairs, tables, ice and drinks, and runs errands.</span></li>
-          <li><b>Many revenue streams.</b> <span>Weddings, corporate, festivals, golf tournaments, ski areas, wineries and deck-only rentals.</span></li>
+          <li><b>Many revenue streams.</b> <span>Weddings, corporate, festivals, golf tournaments, ski areas, wineries, theatre and deck-only rentals.</span></li>
         </ul>
       </div>
       <div class="cons">
